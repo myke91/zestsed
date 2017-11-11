@@ -11,4 +11,12 @@ class ContributionController extends Controller
     public function contributions(){
         return view('contributions.index');
     }
+    
+    public function saveContribution(){
+        
+    }
+    
+    public function approveContribution(){
+        
+    }
 }
