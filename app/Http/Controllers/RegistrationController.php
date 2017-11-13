@@ -6,6 +6,7 @@ use \Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Registration;
 use \App\Device;
+use \App\User;
 use PushNotification;
 
 class RegistrationController extends Controller {
@@ -17,11 +18,11 @@ class RegistrationController extends Controller {
     public function saveRegistration(Request $request) {
         Log::info('calling save registration from mobile application -- ' . $request->email);
         try {
-           
+
             Registration::create($request->all());
             Log::info('save successful');
 
-            
+
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
         } catch (Exception $ex) {
             Log::info('save error');
@@ -29,11 +30,25 @@ class RegistrationController extends Controller {
         }
     }
 
-    public function approveRegistration() {
-         $device = Device::where('email', $request - email)->first();
-        PushNotification::app('android')
+    public function approveRegistration(Request $request) {
+        try {
+            $customer = Registration::find($request->id);
+            $customer->isApproved = true;
+            $customer->dateOfApproval = date('Y-m-d');
+           
+            User::create([
+                'email' => $customer->email,
+                'name' => $customer->firstName . ' ' . $customer->otherNames . ' ' . $customer->lastName,
+                'password'=>''
+            ]);
+            $customer->save();
+            $device = Device::where('email', $customer->email)->first();
+            PushNotification::app('android')
                     ->to($device->deviceToken)
-                    ->send('Login Successful');
+                    ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
+        } catch (Exception $ex) {
+            return response()->json(['error' => 'ERROR APROVING REGISTRATION'], 500);
+        }
     }
 
     public function registerDevice(Request $request) {
