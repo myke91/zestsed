@@ -70,5 +70,11 @@ class RegistrationController extends Controller {
             return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
         }
     }
+    public function showRegistration(Request $request) {
+        if ($request->ajax()) {
+            return response(Registration::find($request->registrationId));
+        }
+    }
+
 
 }
