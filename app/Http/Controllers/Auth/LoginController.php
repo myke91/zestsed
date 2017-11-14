@@ -61,7 +61,7 @@ use AuthenticatesUsers;
     public function setPassword(Request $request) {
         try {
             DB::table('users')
-                    ->where('email', $request->request)
+                    ->where('email', $request->email)
                     ->update(['password' => bcrypt($request->password)]);
             return response()->json(['success' => 'Request successful'], 200);
         } catch (Exception $ex) {
