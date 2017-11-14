@@ -10,9 +10,70 @@ use \App\User;
 use PushNotification;
 
 class RegistrationController extends Controller {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+        $regs = Registration::paginate(10);
+        return view('registrations.index', compact('regs'));
+    }
 
-    public function registrations() {
-        return view('registrations.index');
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($registrationId) {
+        $reg = Registration::findOrFail($registrationId);
+
+        return view('registrations.show', Compact('reg'));
+    }
+
+    public function edit($id) {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id) {
+        //
     }
 
     public function saveRegistration(Request $request) {
@@ -35,11 +96,11 @@ class RegistrationController extends Controller {
             $customer = Registration::find($request->id);
             $customer->isApproved = true;
             $customer->dateOfApproval = date('Y-m-d');
-           
+
             User::create([
                 'email' => $customer->email,
                 'name' => $customer->firstName . ' ' . $customer->otherNames . ' ' . $customer->lastName,
-                'password'=>''
+                'password' => ''
             ]);
             $customer->save();
             $device = Device::where('email', $customer->email)->first();
@@ -68,6 +129,12 @@ class RegistrationController extends Controller {
         } catch (Exception $ex) {
             Log::info('save error');
             return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
+        }
+    }
+
+    public function showRegistration(Request $request) {
+        if ($request->ajax()) {
+            return response(Registration::find($request->registrationId));
         }
     }
 

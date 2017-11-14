@@ -11,14 +11,12 @@
   |
  */
 
+Route::get('/', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
+Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
 
-Route::get('/', ['as' => 'index', 'uses' => 'DashboardController@index']);
-Route::get('/dashboard', ['as' => 'index', 'uses' => 'DashboardController@index']);
-Route::get('/registrations', ['as' => 'registrations', 'uses' => 'RegistrationController@registrations']);
-Route::get('/contributions', ['as' => 'contributions', 'uses' => 'ContributionController@contributions']);
-Route::get('/investments', ['as' => 'investments', 'uses' => 'InvestmentController@investments']);
 Route::post('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@login']);
 Route::post('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
+
 Route::get('/registration/approve', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
 Route::get('/contribution/approve', ['as' => 'approveContribution', 'uses' => 'ContributionController@approveContribution']);
 
@@ -30,3 +28,9 @@ Route::post('/mobile/registerDevice', ['as' => 'registerDevice', 'uses' => 'Regi
 Route::post('/mobile/setPassword', ['as' => 'setPassword', 'uses' => 'Auth\LoginController@setPassword']);
 Route::post('/mobile/addContribution', ['as' => 'saveContribution', 'uses' => 'ContributionController@saveContribution']);
 Route::get('/mobile/getContributions', ['as' => 'getContributions', 'uses' => 'ContributionController@getContributions']);
+
+
+Route::resource('registrations', 'RegistrationController');
+Route::resource('contributions', 'ContributionController');
+Route::resource('investments', 'InvestmentController');
+
