@@ -24,6 +24,10 @@ class InvestmentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+
+    }
+    public function createInvestment()
+    {
         return view('investments.addInvestment');
     }
 
