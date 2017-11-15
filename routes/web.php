@@ -18,6 +18,7 @@
 //Route::get('/investments', ['as' => 'investments', 'uses' => 'InvestmentController@investments']);
 
 Route::get('/',['as'=>'dashboard','uses'=>'MainController@dashboard']);
+Route::get('addContribution',['as'=>'addContribution','uses'=>'ContributionController@addContribution']);
 Route::post('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@login']);
 Route::post('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 Route::get('/registration/approve', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
