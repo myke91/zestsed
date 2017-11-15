@@ -10,7 +10,8 @@
                             <h4 class="page-title">Contributions</h4> </div>
                         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                             <ol class="breadcrumb">
-                                <li><a href="#">Contributions</a></li>
+                                <li><a href="/addContribution">Add Contributions</a></li>
+                                <li><a href="/contributions">Contributions</a></li>
                             </ol>
                         </div>
                         <!-- /.col-lg-12 -->
@@ -54,7 +55,8 @@
                                                 <td class="txt-oflo">{{$cont->dateOfContribution}}</td>
                                                 <td><span class="text-success">Mode of Payment: {{$cont->modeOfPayment}}
                                                     / Source of Payment: {{$cont->sourceOfPayment}} /
-                                                    Date of Approval: {{$cont->dateOfApproval}}</span></td>
+                                                    Date of Approval: {{$cont->dateOfApproval}} /
+                                                    IsApproved: {{$cont->isApproved}}</span></td>
                                             </tr>
                                         </tbody>
                                             @endforeach

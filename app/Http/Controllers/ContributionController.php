@@ -73,6 +73,11 @@ class ContributionController extends Controller {
         //
     }
 
+    public function addContribution()
+    {
+        return view('contributions.addContribution');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -119,6 +124,7 @@ class ContributionController extends Controller {
         } catch (Exception $ex) {
             return response()->json(['error' => 'ERROR APROVING CONTRIBUTION'], 500);
         }
+
     }
 
     public function getContributions(Request $request) {
