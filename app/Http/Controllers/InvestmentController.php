@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Investment;
+use App\Registration;
 
 class InvestmentController extends Controller {
     /**
@@ -14,31 +15,27 @@ class InvestmentController extends Controller {
     public function index() {
         $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.investmentId')
                 ->join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
-                ->paginate(10);
+                ->paginate(20);
         return view('investments.index', compact('invests'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create() {
 
     }
     public function createInvestment()
     {
-        return view('investments.addInvestment');
+        $regs = Registration::all();
+        return view('investments.addInvestment',compact('regs'));
+    }
+    public function postInvestments(Request $request) {
+        //return $request->all();
+        Investment::create($request->all());
+        return redirect('/addInvestments');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request) {
-        //
+
     }
 
     /**
@@ -80,10 +77,6 @@ class InvestmentController extends Controller {
      */
     public function destroy($id) {
         //
-    }
-
-    public function saveInvestment(Request $request) {
-        
     }
 
 }

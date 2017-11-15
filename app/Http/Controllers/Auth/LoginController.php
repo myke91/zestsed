@@ -73,9 +73,9 @@ use AuthenticatesUsers;
         return response($this->loginProxy->attemptRefresh());
     }
 
-    public function logout() {
-        $this->loginProxy->logout();
-        return response(null, 204);
-    }
+//    public function logout() {
+//        $this->loginProxy->logout();
+//        return response(null, 204);
+//    }
 
 }

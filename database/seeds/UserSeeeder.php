@@ -15,6 +15,7 @@ class UserSeeeder extends Seeder {
                 [
                     [
                         'name' => 'kweku one',
+                        'username'=>'fred',
                         'email' => 'kweku@one.com',
                         'password' => bcrypt('pass123')
                     ]
