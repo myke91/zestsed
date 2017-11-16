@@ -34,7 +34,7 @@
             <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
                 <div >
-                    <input id="username" type="username" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+                    <input id="username" type="username" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
                     @if ($errors->has('username'))
                         <span class="help-block" style="color: red">
                                             <strong>{{ $errors->first('username') }}</strong>
@@ -45,7 +45,7 @@
 
             <div class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input id="password" type="password" class="form-control" name="password" required>
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
                 @if ($errors->has('password'))
                     <span class="help-block">
                                                 <strong>{{ $errors->first('password') }}</strong>
