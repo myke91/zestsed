@@ -14,15 +14,6 @@
 Route::get('/', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
 Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
 
-
-Route::get('/',['as'=>'dashboard','uses'=>'MainController@dashboard']);
-Route::get('addContribution',['as'=>'addContribution','uses'=>'ContributionController@addContribution']);
-
-Route::get('addInvestments',['as'=>'addInvestments','uses'=>'InvestmentController@createInvestment']);
-
-Route::post('postInvestments',['as'=>'postInvestments','uses'=>'InvestmentController@postInvestments']);
-
-
 Route::get('/registration/approve', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
 Route::get('/contribution/approve', ['as' => 'approveContribution', 'uses' => 'ContributionController@approveContribution']);
 
@@ -37,11 +28,18 @@ Route::post('/mobile/addContribution', ['as' => 'saveContribution', 'uses' => 'C
 Route::get('/mobile/getContributions', ['as' => 'getContributions', 'uses' => 'ContributionController@getContributions']);
 
 
-Route::resource('registrations', 'RegistrationController');
-Route::resource('contributions', 'ContributionController');
-Route::resource('investments', 'InvestmentController');
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware'=>'authen'],function (){
+    Route::resource('registrations', 'RegistrationController');
+    Route::resource('contributions', 'ContributionController');
+    Route::resource('investments', 'InvestmentController');
+
+    Route::get('addContribution',['as'=>'addContribution','uses'=>'ContributionController@addContribution']);
+
+    Route::get('addInvestments',['as'=>'addInvestments','uses'=>'InvestmentController@createInvestment']);
+
+    Route::post('postInvestments',['as'=>'postInvestments','uses'=>'InvestmentController@postInvestments']);
+});
