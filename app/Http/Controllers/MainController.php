@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Registration;
 use App\Contribution;
 use App\Investment;
+use \Illuminate\Support\Facades\Log;
 
 class MainController extends Controller {
 
@@ -21,6 +22,15 @@ class MainController extends Controller {
                 ->join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
                 ->paginate(10);
         return view('main', compact('registration', 'contribution', 'investment', 'conts', 'invests'));
+    }
+
+    public function getUserDetails(Request $request) {
+        try {
+            Log::debug('Loading user profile details');
+            return response()->json(Registration::where('email','=', $request->email)->first(), 200);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => 'Unable to retrieve user details' . $ex->getMessage()], 500);
+        }
     }
 
 }

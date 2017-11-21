@@ -85,7 +85,7 @@ class RegistrationController extends Controller {
 
 
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
-        } catch (Exception $ex) {
+        } catch (\Illuminate\Database\QueryException $ex) {
             Log::info('save error');
             return response()->json(['error' => 'An error occured while saving your registration \n' . $ex->getMessage()], 500);
         }
@@ -107,8 +107,9 @@ class RegistrationController extends Controller {
             PushNotification::app('android')
                     ->to($device->deviceToken)
                     ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
-        } catch (Exception $ex) {
-            return response()->json(['error' => 'ERROR APROVING REGISTRATION'], 500);
+        } catch (\Illuminate\Database\QueryException $ex) {
+           
+            return response()->json(['error' => 'ERROR APROVING REGISTRATION'.$ex->getMessage()], 500);
         }
     }
 
@@ -126,7 +127,7 @@ class RegistrationController extends Controller {
             Device::create($data);
             Log::info('device registration successful');
             return response()->json(['success' => 'DEVICE REGISTRATION SUCCESSFUL'], 200);
-        } catch (Exception $ex) {
+        } catch (\Illuminate\Database\QueryException $ex) {
             Log::info('save error');
             return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
         }

@@ -26,20 +26,20 @@ Route::post('/mobile/registerDevice', ['as' => 'registerDevice', 'uses' => 'Regi
 Route::post('/mobile/setPassword', ['as' => 'setPassword', 'uses' => 'Auth\LoginController@setPassword']);
 Route::post('/mobile/addContribution', ['as' => 'saveContribution', 'uses' => 'ContributionController@saveContribution']);
 Route::get('/mobile/getContributions', ['as' => 'getContributions', 'uses' => 'ContributionController@getContributions']);
-
+Route::get('/mobile/profile', ['as' => 'getUserDetails', 'uses' => 'MainController@getUserDetails']);
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware'=>'authen'],function (){
+Route::group(['middleware' => 'authen'], function () {
     Route::resource('registrations', 'RegistrationController');
     Route::resource('contributions', 'ContributionController');
     Route::resource('investments', 'InvestmentController');
 
-    Route::get('addContribution',['as'=>'addContribution','uses'=>'ContributionController@addContribution']);
+    Route::get('addContribution', ['as' => 'addContribution', 'uses' => 'ContributionController@addContribution']);
 
-    Route::get('addInvestments',['as'=>'addInvestments','uses'=>'InvestmentController@createInvestment']);
+    Route::get('addInvestments', ['as' => 'addInvestments', 'uses' => 'InvestmentController@createInvestment']);
 
-    Route::post('postInvestments',['as'=>'postInvestments','uses'=>'InvestmentController@postInvestments']);
+    Route::post('postInvestments', ['as' => 'postInvestments', 'uses' => 'InvestmentController@postInvestments']);
 });

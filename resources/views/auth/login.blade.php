@@ -26,11 +26,12 @@
 
 <div class="container">
 
-
+   
     <form class="login-form" method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
         <div class="login-wrap">
-            <p class="login-img"><i class="icon_lock_alt"></i></p>
+           
+            <p class="login-img">  <img src="plugins/images/logo-small.png"/> <i class="icon_lock_alt"></i></p>
             <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
                 <div >

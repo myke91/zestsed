@@ -19,12 +19,14 @@ class CreateRegistrationTable extends Migration {
             $table->string('otherNames')->nullable();
             $table->string('gender')->nullable();
             $table->string('email',100)->unique();
+            $table->date('dateOfBirth');
             $table->string('phoneNumber')->nullable();
             $table->string('nextOfKin')->nullable();
             $table->string('nextOfKinTelephone')->nullable();
             $table->string('residentialAddress')->nullable();
             $table->string('occupation')->nullable();
             $table->string('purposeOfInvesting')->nullable();
+            $table->binary('image')->nullable();
             $table->boolean('isApproved')->default(false);
             $table->date('dateOfApproval')->nullable();
             $table->timestamps();
