@@ -33,7 +33,7 @@
                                     <th>PHONE NUMBER</th>
                                     <th>OCCUPATION</th>
                                     <th>NEXT OF KIN</th>
-                                    <th>MORE DETAILS</th>
+                                    <th>OCCUPATION</th>
                                     <th>APPROVE</th>
                                 </tr>
                             </thead>
@@ -44,11 +44,16 @@
                                 <td>{{$reg->phoneNumber}}</td>
                                 <td class="txt-oflo">{{$reg->occupation}}</td>
                                 <td>{{$reg->nextOfKin}}</td>
-                                <td><span class="text-success">
-                                        Gender: {{$reg->gender}} / Next Of Kin No: {{$reg->nextOfKinTelephone}} /
-                                        Occupation: {{$reg->occupation}} / Date of Approval: {{$reg->dateOfApproval}}
-                                    </span></td>
-                                <td><a href=""><i class="fa fa-check"></i></a> </td>
+                                <td>
+                                {{$reg->occupation}}
+                                </td>
+                                <td>
+                                     @if($reg->isApproved==1)
+                                        <i class="fa fa-check" id="checked"></i>
+                                    @else
+                                    <a href="{{route('approveRegistration')}}"><i class="fa fa-times" id="notchecked"></i></a>
+                                         @endif
+                                </td>
                             </tr>
 
                             </tbody>

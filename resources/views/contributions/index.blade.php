@@ -43,7 +43,7 @@
                                                 <th>AMOUNT</th>
                                                 <th>VENDOR NAME</th>
                                                 <th>DATE</th>
-                                                <th>CONTRIBUTION DETAIL</th>
+                                                <th>MOB</th>
                                                 <th>APPROVE</th>
                                             </tr>
                                         </thead>
@@ -54,11 +54,14 @@
                                                 <td class="txt-oflo">{{$cont->contributionAmount}}</td>
                                                 <td>{{$cont->vendorName}}</td>
                                                 <td class="txt-oflo">{{$cont->dateOfContribution}}</td>
-                                                <td><span class="text-success">Mode of Payment: {{$cont->modeOfPayment}}
-                                                    / Source of Payment: {{$cont->sourceOfPayment}} /
-                                                    Date of Approval: {{$cont->dateOfApproval}} /
-                                                    IsApproved: {{$cont->isApproved}}</span></td>
-                                                <td><a href=""><i class="fa fa-check"></i></a> </td>
+                                                <td>Mode of Payment: {{$cont->modeOfPayment}}
+                                                <td>
+                                                    @if($cont->isApproved==1)
+                                                        <i class="fa fa-check" id="checked"></i>
+                                                    @else
+                                                        <a href="{{route('approveContribution')}}"><i class="fa fa-times" id="notchecked"></i></a>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         </tbody>
                                             @endforeach
