@@ -36,12 +36,14 @@
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
                 <div >
                     <input id="username" type="username" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
-                    @if ($errors->has('username'))
-                        <span class="help-block" style="color: red">
+                </div>
+            </div>
+            <div>
+                @if ($errors->has('username'))
+                    <span class="help-block" style="color: red">
                                             <strong>{{ $errors->first('username') }}</strong>
                                         </span>
-                    @endif
-                </div>
+                @endif
             </div>
 
             <div class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
