@@ -18,7 +18,7 @@ class MainController extends Controller {
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
                 ->paginate(10);
 
-        $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.investmentId')
+        $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
                 ->join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
                 ->paginate(10);
         return view('main', compact('registration', 'contribution', 'investment', 'conts', 'invests'));

@@ -30,19 +30,20 @@
     <form class="login-form" method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
         <div class="login-wrap">
-           
-            <p class="login-img">  <img src="plugins/images/logo-small.png"/> <i class="icon_lock_alt"></i></p>
-            <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+
+              <p class="login-img">  <img src="plugins/images/logo-small.png"/></p>
+              
+            <div class="input-group{{ $errors->has('username') ? ' has-error' : '' }}">
                 <span class="input-group-addon"><i class="icon_profile"></i></span>
                 <div >
-                    <input id="username" type="username" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
+                    <input id="email" type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
                 </div>
             </div>
             <div>
                 @if ($errors->has('username'))
                     <span class="help-block" style="color: red">
-                                            <strong>{{ $errors->first('username') }}</strong>
-                                        </span>
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
                 @endif
             </div>
 

@@ -6,9 +6,10 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
-{
-    use HasApiTokens, Notifiable;
+class User extends Authenticatable {
+
+    use HasApiTokens,
+        Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name','username','email', 'password',
+        'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -27,4 +28,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function setRememberToken($value) {
+        $val = str_random(10);
+        $this->attributes['remember_token'] = ($val);
+    }
+
 }

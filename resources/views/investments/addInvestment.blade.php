@@ -22,6 +22,12 @@
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="white-box">
                         <h3 class="box-title">Add Investments</h3>
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{session('success')}}
+                            </div>
+                        @endif
                         <form class="form-horizontal" role="form" id="frm-create-investment" action="{{route('postInvestments')}}" method="post">
                             {{csrf_field()}}
                             <div class="form-group has-success">
@@ -49,7 +55,7 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="panel-footer">
-                                <button type="submit" class="btn btn-success btn-sm " onclick="validation();">Add Investment</button>
+                                <button type="submit" class="btn btn-success btn-sm ">Add Investment</button>
                             </div>
                         </form>
 
@@ -64,18 +70,18 @@
     <script src="js/sweetalert.min.js"></script>
 <script type="text/javascript">
 
-    function validation() {
-
-        var contId = document.getElementById('contributionId').value;
-        var interest = document.getElementById('interestRate').value;
-        var indate = document.getElementById('dateOfInvestment').value;
-
-        if((contId  != '') && (interest!='') && (indate!='')){
-            swal("Good job!", "Investment saved successfully!", "success");
-            return true;
-        }
-
-}
+//    function validation() {
+//
+//        var contId = document.getElementById('contributionId').value;
+//        var interest = document.getElementById('interestRate').value;
+//        var indate = document.getElementById('dateOfInvestment').value;
+//
+//        if((contId  != '') && (interest!='') && (indate!='')){
+//            swal("Good job!", "Investment saved successfully!", "success");
+//            return true;
+//        }
+//
+//}
     $(document).ready(function(){
         $("#dateOfInvestment").each(function() {
             $(this).datepicker();

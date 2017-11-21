@@ -15,7 +15,7 @@ class InvestmentController extends Controller {
     public function index() {
         $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
                 ->join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
-                ->paginate(20);
+                ->paginate(10);
         return view('investments.index', compact('invests'));
     }
 
@@ -30,7 +30,7 @@ class InvestmentController extends Controller {
     public function postInvestments(Request $request) {
         //return $request->all();
         Investment::create($request->all());
-        return redirect('/addInvestments');
+        return back()->with(['success'=>'Investment saved successfully']);
     }
 
 

@@ -103,12 +103,12 @@
                             <a href="/investments" class="waves-effect"><i class="fa fa-bank fa-fw" aria-hidden="true"></i>Investments</a>
                         </li>
                         @guest
-                        <li><a href="{{ route('login') }}">Login</a></li>
+                        {{--<li><a href="{{ route('login') }}">Login</a></li>--}}
                         {{--<li><a href="{{ route('register') }}">Register</a></li>--}}
                         @else
                             <li >
                                 <a href="#" class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ ucfirst(Auth::user()->name) }}
+                                   Welcome, {{ ucfirst(Auth::user()->name) }}
                                 </a>
 
 
