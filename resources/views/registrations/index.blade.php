@@ -51,7 +51,7 @@
                                      @if($reg->isApproved==1)
                                         <i class="fa fa-check" id="checked"></i>
                                     @else
-                                    <a href="{{route('approveRegistration')}}"><i class="fa fa-times" id="notchecked"></i></a>
+                                    <a href="{{route('approveRegistration')}}" onclick="return confirm('Are you sure you want to delete this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
                                          @endif
                                 </td>
                             </tr>
