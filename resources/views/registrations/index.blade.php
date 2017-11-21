@@ -34,6 +34,7 @@
                                     <th>OCCUPATION</th>
                                     <th>NEXT OF KIN</th>
                                     <th>MORE DETAILS</th>
+                                    <th>APPROVE</th>
                                 </tr>
                             </thead>
                             @foreach($regs as $reg)
@@ -47,6 +48,7 @@
                                         Gender: {{$reg->gender}} / Next Of Kin No: {{$reg->nextOfKinTelephone}} /
                                         Occupation: {{$reg->occupation}} / Date of Approval: {{$reg->dateOfApproval}}
                                     </span></td>
+                                <td><a href=""><i class="fa fa-check"></i></a> </td>
                             </tr>
 
                             </tbody>

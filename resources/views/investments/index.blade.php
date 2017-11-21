@@ -40,15 +40,14 @@
                             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for investor..">
                         </div>
                         <h3 class="box-title">List of Investments</h3>
-
                         <div class="table-responsive">
-                            <div class="table-responsive">
                                 <table class="table" id="investTable">
                                     <thead>
                                     <tr>
                                         <th>CONTRIBUTOR</th>
                                         <th>INTEREST RATE</th>
                                         <th>DATE OF CONTRIBUTION</th>
+
                                     </tr>
                                     </thead>
                                     @forelse($invests as $invest)
@@ -57,24 +56,27 @@
                                             <td>{{$invest->firstName." ".$invest->otherNames." ".$invest->lastName}}</td>
                                             <td class="txt-oflo">{{$invest->interestRate}}</td>
                                             <td class="txt-oflo">{{$invest->dateOfInvestment}}</td>
+
                                         </tr>
                                         </tbody>
-                                        @empty
+                                    @empty
                                         No data
                                     @endforelse
                                 </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-10 ">
-                                {{$invests->links()}}
                             </div>
-                        </div>
-                    </div>
+                            <div class="row">
+                                <div class="col-md-10 ">
+                                    {{$invests->links()}}
+                                </div>
+                            </div>
+
                 </div>
             </div>
+
         </div>
+     </div>
     </div>
-    </div>
+
     <script type="text/javascript">
         function myFunction() {
             // Declare variables

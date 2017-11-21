@@ -11,8 +11,8 @@ use \Illuminate\Support\Facades\Log;
 class MainController extends Controller {
 
     public function dashboard() {
-        $registration = Registration::get()->count();
-        $contribution = Contribution::get()->count();
+        $registration = Registration::where('isApproved',1)->get()->count();
+        $contribution = Contribution::where('isApproved',1)->get()->count();
         $investment = Investment::get()->count();
 
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.contributionId')

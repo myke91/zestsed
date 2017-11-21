@@ -44,6 +44,7 @@
                                                 <th>VENDOR NAME</th>
                                                 <th>DATE</th>
                                                 <th>CONTRIBUTION DETAIL</th>
+                                                <th>APPROVE</th>
                                             </tr>
                                         </thead>
                                         @foreach($conts as $cont)
@@ -57,6 +58,7 @@
                                                     / Source of Payment: {{$cont->sourceOfPayment}} /
                                                     Date of Approval: {{$cont->dateOfApproval}} /
                                                     IsApproved: {{$cont->isApproved}}</span></td>
+                                                <td><a href=""><i class="fa fa-check"></i></a> </td>
                                             </tr>
                                         </tbody>
                                             @endforeach
