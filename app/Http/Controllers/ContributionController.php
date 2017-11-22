@@ -17,7 +17,7 @@ class ContributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
+        $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
                 ->paginate(10);
         return view('contributions.index', compact('conts'));
     }
@@ -134,9 +134,17 @@ class ContributionController extends Controller {
     }
 
     public function getUserContributions(Request $request) {
-        $data = Contribution::join('investment','investment.contributionId','=','contribution.contribution')
-                ->where(['contribution.userId'=>$request->id,'investment.contributionId'])->get();
+        $data = Contribution::join('investment', 'investment.contributionId', '=', 'contribution.contribution')
+                        ->where(['contribution.userId' => $request->id, 'investment.contributionId'])->get();
         return response()->json($data);
+    }
+
+    public function showContribution(Request $request) {
+
+        if ($request->ajax()) {
+            return response(Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+                            ->find($request->contributionId));
+        }
     }
 
 }

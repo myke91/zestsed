@@ -14,7 +14,7 @@ class InvestmentController extends Controller {
      */
     public function index() {
         $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
-                ->join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
+                ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
                 ->paginate(10);
         return view('investments.index', compact('invests'));
     }
