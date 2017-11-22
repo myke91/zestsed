@@ -179,15 +179,9 @@
         <script src="js/custom.min.js"></script>
         <script src="js/dashboard1.js"></script>
         <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
-        <script>
-            $(document).ready(function(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-            });
-            </script>
+        <script src="js/script.js">
+                   </script>
+             @yield('scripts')
     </body>
 
 </html>

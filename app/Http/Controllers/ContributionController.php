@@ -11,7 +11,6 @@ use PushNotification;
 
 class ContributionController extends Controller {
 
-
     /**
      * Display a listing of the resource.
      *
@@ -73,8 +72,7 @@ class ContributionController extends Controller {
         //
     }
 
-    public function addContribution()
-    {
+    public function addContribution() {
         return view('contributions.addContribution');
     }
 
@@ -124,7 +122,6 @@ class ContributionController extends Controller {
         } catch (Exception $ex) {
             return response()->json(['error' => 'ERROR APROVING CONTRIBUTION'], 500);
         }
-
     }
 
     public function getContributions(Request $request) {
@@ -134,6 +131,12 @@ class ContributionController extends Controller {
         $data = Contribution::where(['userId' => $user->registrationId, 'isApproved' => 1])->get();
         Log::debug($data);
         return response()->json($data, 200);
+    }
+
+    public function getUserContributions(Request $request) {
+        $data = Contribution::join('investment','investment.contributionId','=','contribution.contribution')
+                ->where(['contribution.userId'=>$request->id,'investment.contributionId'])->get();
+        return response()->json($data);
     }
 
 }

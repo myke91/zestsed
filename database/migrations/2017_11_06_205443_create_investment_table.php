@@ -15,7 +15,7 @@ class CreateInvestmentTable extends Migration
     {
         Schema::create('investment', function (Blueprint $table) {
             $table->increments('investmentId');
-            $table->decimal('interestRate',2,1);
+            $table->decimal('interestRate',10,2);
             $table->date('dateOfInvestment');
             $table->integer('contributionId')->unsigned();
             $table->foreign('contributionId')->references('contributionId')->on('contribution');
