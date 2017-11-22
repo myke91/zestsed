@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+    @include('contributions.contributionDetails')
             <!-- ============================================================== -->
             <!-- Page Content -->
             <!-- ============================================================== -->
@@ -43,8 +44,8 @@
                                                 <th>AMOUNT</th>
                                                 <th>VENDOR NAME</th>
                                                 <th>DATE</th>
-                                                <th>MOB</th>
-                                                <th>APPROVE</th>
+                                                <th>MODE OF PAYMENT</th>
+                                                <th colspan="2">APPROVE</th>
                                             </tr>
                                         </thead>
                                         @foreach($conts as $cont)
@@ -54,7 +55,7 @@
                                                 <td class="txt-oflo">{{$cont->contributionAmount}}</td>
                                                 <td>{{$cont->vendorName}}</td>
                                                 <td class="txt-oflo">{{$cont->dateOfContribution}}</td>
-                                                <td>Mode of Payment: {{$cont->modeOfPayment}}
+                                                <td>{{$cont->modeOfPayment}}
                                                 <td>
                                                     @if($cont->isApproved==1)
                                                         <i class="fa fa-check" id="checked"></i>
@@ -62,6 +63,7 @@
                                                         <a href="{{route('approveContribution')}}" onclick="return confirm('Are you sure you want to approve this contribution?');"><i class="fa fa-times" id="notchecked"></i></a>
                                                     @endif
                                                 </td>
+                                                <td><Button value="{{$cont->contributionId}}" class="btn btn-success" id="show-cont">View Details</Button></td>
                                             </tr>
                                         </tbody>
                                             @endforeach

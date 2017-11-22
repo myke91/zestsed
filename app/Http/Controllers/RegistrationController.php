@@ -134,9 +134,12 @@ class RegistrationController extends Controller {
     }
 
     public function showRegistration(Request $request) {
-        if ($request->ajax()) {
+
+        if ($request->ajax())
+        {
             return response(Registration::find($request->registrationId));
         }
     }
+
 
 }

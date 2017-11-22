@@ -18,7 +18,7 @@ class ContributionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.contributionId')
+        $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
                 ->paginate(10);
         return view('contributions.index', compact('conts'));
     }
@@ -134,6 +134,15 @@ class ContributionController extends Controller {
         $data = Contribution::where(['userId' => $user->registrationId, 'isApproved' => 1])->get();
         Log::debug($data);
         return response()->json($data, 200);
+    }
+
+    public function showContribution(Request $request) {
+
+        if ($request->ajax())
+        {
+            return response(Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+                              ->find($request->contributionId));
+        }
     }
 
 }

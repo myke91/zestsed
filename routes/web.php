@@ -38,6 +38,8 @@ Route::group(['middleware' => 'authen'], function () {
     Route::resource('investments', 'InvestmentController');
     
     Route::get('addContribution', ['as' => 'addContribution', 'uses' => 'ContributionController@addContribution']);
-    Route::get('addInvestments', ['as' => 'addInvestments', 'uses' => 'InvestmentController@createInvestment']);
-    Route::post('postInvestments', ['as' => 'postInvestments', 'uses' => 'InvestmentController@postInvestments']);
+    Route::get('/addInvestments', ['as' => 'addInvestments', 'uses' => 'InvestmentController@createInvestment']);
+    Route::post('/postInvestments', ['as' => 'postInvestments', 'uses' => 'InvestmentController@postInvestments']);
+    Route::get('/show-registrationdetails',['as' => 'showRegDetails', 'uses' => 'RegistrationController@showRegistration']);
+    Route::get('/show-contributiondetails',['as'=>'showContributionDetails','uses'=>'ContributionController@showContribution']);
 });

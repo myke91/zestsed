@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+    @include('registrations.RegistrationDetails')
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row bg-title">
@@ -34,7 +35,7 @@
                                     <th>OCCUPATION</th>
                                     <th>NEXT OF KIN</th>
                                     <th>OCCUPATION</th>
-                                    <th>APPROVE</th>
+                                    <th colspan="2">APPROVE</th>
                                 </tr>
                             </thead>
                             @foreach($regs as $reg)
@@ -54,6 +55,7 @@
                                     <a href="{{route('approveRegistration')}}" onclick="return confirm('Are you sure you want to delete this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
                                          @endif
                                 </td>
+                                <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-cont">View Details</Button></td>
                             </tr>
                             </tbody>
                             @endforeach

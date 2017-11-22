@@ -82,11 +82,6 @@
 //        }
 //
 //}
-    $(document).ready(function(){
-        $("#dateOfInvestment").each(function() {
-            $(this).datepicker();
-        });
-    });
 
 
 </script>
