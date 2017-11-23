@@ -55,7 +55,7 @@
                                     <a href="{{route('approveRegistration')}}" onclick="return confirm('Are you sure you want to delete this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
                                          @endif
                                 </td>
-                                <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-cont">View Details</Button></td>
+                                <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-reg">View Details</Button></td>
                             </tr>
                             </tbody>
                             @endforeach
