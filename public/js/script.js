@@ -29,7 +29,6 @@ $(document).on('click', '#show-reg', function () {
     console.log('show reg details ');
     $('#registration-show').modal();
     registrationId = $(this).val();
-    console.log(registrationId);
     $.get("/show-registrationdetails", {registrationId: registrationId}, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);

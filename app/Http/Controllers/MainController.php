@@ -7,6 +7,7 @@ use App\Registration;
 use App\Contribution;
 use App\Investment;
 use \Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller {
 
@@ -31,6 +32,13 @@ class MainController extends Controller {
         } catch (\Exception $ex) {
             return response()->json(['error' => 'Unable to retrieve user details' . $ex->getMessage()], 500);
         }
+    }
+    
+    public function overviewGraphData(){
+        $query = 'SELECT MONTHNAME(created_at) , COUNT(registrationId) '
+                . 'FROM `registration` WHERE created_at >= NOW() - INTERVAL 1 YEAR '
+                . 'GROUP BY MONTH(created_at)';
+        DB::query($query);
     }
 
 }
