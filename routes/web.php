@@ -14,8 +14,8 @@
 Route::get('/', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
 Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'MainController@dashboard']);
 
-Route::get('/registration/approve', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
-Route::get('/contribution/approve', ['as' => 'approveContribution', 'uses' => 'ContributionController@approveContribution']);
+Route::get('/registration/approve/{id}', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
+Route::get('/contribution/approve/{id}', ['as' => 'approveContribution', 'uses' => 'ContributionController@approveContribution']);
 
 
 

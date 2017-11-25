@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-    @include('registrations.RegistrationDetails')
+@include('registrations.RegistrationDetails')
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row bg-title">
@@ -22,7 +22,7 @@
             <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="white-box">
                     <div class="col-md-3 col-sm-4 col-xs-6 pull-right">
-                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for member..">
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for member..">
                     </div>
                     <h3 class="box-title">List of Registrations</h3>
                     <div class="table-responsive">
@@ -46,16 +46,16 @@
                                 <td class="txt-oflo">{{$reg->occupation}}</td>
                                 <td>{{$reg->nextOfKin}}</td>
                                 <td>
-                                {{$reg->occupation}}
+                                    {{$reg->occupation}}
                                 </td>
                                 <td>
-                                     @if($reg->isApproved==1)
-                                        <i class="fa fa-check" id="checked"></i>
+                                    @if($reg->isApproved==1)
+                                    <i class="fa fa-check" id="checked"></i>
                                     @else
-                                    <a href="{{route('approveRegistration')}}" onclick="return confirm('Are you sure you want to delete this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
-                                         @endif
+                                    <a href="{{route('approveRegistration',$reg->registrationId)}}" onclick="return confirm('Are you sure you want to approve this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
+                                    @endif
                                 </td>
-                                <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-cont">View Details</Button></td>
+                                <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-reg">View Details</Button></td>
                             </tr>
                             </tbody>
                             @endforeach
@@ -95,4 +95,4 @@
     }
 
 </script>
-        @endsection
+@endsection

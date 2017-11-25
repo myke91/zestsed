@@ -26,9 +26,11 @@ $(document).on('change', '#contributorId', function (e) {
 });
 
 $(document).on('click', '#show-reg', function () {
+    console.log('show reg details ');
     $('#registration-show').modal();
     registrationId = $(this).val();
-    $.get("{{route('showRegDetails')}}", {registrationId: registrationId}, function (data) {
+    console.log(registrationId);
+    $.get("/show-registrationdetails", {registrationId: registrationId}, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);
         $('#otherNames').val(data.otherNames);
@@ -39,6 +41,7 @@ $(document).on('click', '#show-reg', function () {
         $('#nextOfKinTelephone').val(data.nextOfKinTelephone);
         $('#residentialAddress').val(data.residentialAddress);
         $('#occupation').val(data.occupation);
+        $('#purposeOfInvesting').val(data.purposeOfInvesting);
         $('#isApproved').val(data.isApproved);
         $('#dateOfApproval').val(data.dateOfApproval);
         $('#registrationId').val(data.registrationId);
@@ -49,7 +52,7 @@ $(document).on('click', '#show-reg', function () {
 $(document).on('click', '#show-cont', function () {
     $('#contribution-show').modal();
     contributionId = $(this).val();
-    $.get("{{route('showContributionDetails')}}", {contributionId: contributionId}, function (data) {
+    $.get("/show-contributiondetails", {contributionId: contributionId}, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);
         $('#otherNames').val(data.otherNames);

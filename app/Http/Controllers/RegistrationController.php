@@ -8,8 +8,10 @@ use App\Registration;
 use \App\Device;
 use \App\User;
 use PushNotification;
+use \Illuminate\Support\Facades\Redirect;
 
 class RegistrationController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
@@ -91,13 +93,13 @@ class RegistrationController extends Controller {
         }
     }
 
-    public function approveRegistration(Request $request) {
+    public function approveRegistration($id) {
         try {
-            $customer = Registration::find($request->id);
+            $customer = Registration::find($id);
             $customer->isApproved = true;
             $customer->dateOfApproval = date('Y-m-d');
 
-            User::create([
+            User::insert([
                 'email' => $customer->email,
                 'name' => $customer->firstName . ' ' . $customer->otherNames . ' ' . $customer->lastName,
                 'password' => ''
@@ -107,9 +109,10 @@ class RegistrationController extends Controller {
             PushNotification::app('android')
                     ->to($device->deviceToken)
                     ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
+            return Redirect::action('RegistrationController@index');
         } catch (\Illuminate\Database\QueryException $ex) {
-           
-            return response()->json(['error' => 'ERROR APROVING REGISTRATION'.$ex->getMessage()], 500);
+            $messages = ['error' => 'ERROR APROVING REGISTRATION' . $ex->getMessage()];
+            return Redirect::action('RegistrationController@index')->withErrors($messages);
         }
     }
 
@@ -135,11 +138,9 @@ class RegistrationController extends Controller {
 
     public function showRegistration(Request $request) {
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return response(Registration::find($request->registrationId));
         }
     }
-
 
 }

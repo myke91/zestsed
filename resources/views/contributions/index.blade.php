@@ -60,7 +60,7 @@
                                                     @if($cont->isApproved==1)
                                                         <i class="fa fa-check" id="checked"></i>
                                                     @else
-                                                        <a href="{{route('approveContribution')}}" onclick="return confirm('Are you sure you want to approve this contribution?');"><i class="fa fa-times" id="notchecked"></i></a>
+                                                        <a href="{{route('approveContribution',$cont->contributionId)}}" onclick="return confirm('Are you sure you want to approve this contribution?');"><i class="fa fa-times" id="notchecked"></i></a>
                                                     @endif
                                                 </td>
                                                 <td><Button value="{{$cont->contributionId}}" class="btn btn-success" id="show-cont">View Details</Button></td>

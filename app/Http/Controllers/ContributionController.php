@@ -107,9 +107,9 @@ class ContributionController extends Controller {
         }
     }
 
-    public function approveContribution(Request $request) {
+    public function approveContribution($id) {
         try {
-            $contribution = Contribution::find($request->id);
+            $contribution = Contribution::find($id);
             $contribution->isApproved = true;
             $contribution->dateOfApproval = date('Y-m-d');
 
@@ -119,8 +119,10 @@ class ContributionController extends Controller {
             PushNotification::app('android')
                     ->to($device->deviceToken)
                     ->send("Your contribution of $contribution->contributionAmount on $contribution->dateOfContribution has been approved.");
+            return Redirect::action('ContributionController@index');
         } catch (Exception $ex) {
-            return response()->json(['error' => 'ERROR APROVING CONTRIBUTION'], 500);
+            $messages = ['error' => 'ERROR APROVING CONTRIBUTION' . $ex->getMessage()];
+            return Redirect::action('ContributionController@index')->withErrors($messages);
         }
     }
 
