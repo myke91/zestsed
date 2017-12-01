@@ -11,14 +11,12 @@ class UserSeeeder extends Seeder {
      * @return void
      */
     public function run() {
-        User::insert(
+        User::create(
                 [
-                    [
-                        'name' => 'kweku one',
-                        'username'=>'fred',
-                        'email' => 'fred@one.com',
-                        'password' => 'pass123'
-                    ]
+                    'name' => 'kweku one',
+                    'username' => 'fred',
+                    'email' => 'fred@one.com',
+                    'password' => 'pass123'
         ]);
     }
 

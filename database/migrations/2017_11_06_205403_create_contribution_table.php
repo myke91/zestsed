@@ -20,7 +20,8 @@ class CreateContributionTable extends Migration {
             $table->date('dateOfContribution');
             $table->decimal('contributionAmount', 10, 2);
             $table->boolean('isApproved')->default(false);
-            $table->date('dateOfApproval')->nullable();;
+            $table->date('dateOfApproval')->nullable();
+            $table->boolean('isInvested')->default(false);
             $table->integer('userId')->unsigned();
             $table->foreign('userId')->references('registrationId')->on('registration');
             $table->timestamps();

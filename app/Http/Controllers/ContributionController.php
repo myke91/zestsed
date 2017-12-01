@@ -8,6 +8,7 @@ use \Illuminate\Support\Facades\Log;
 use App\Registration;
 use App\Device;
 use PushNotification;
+use \Illuminate\Support\Facades\Redirect;
 
 class ContributionController extends Controller {
 
@@ -18,6 +19,7 @@ class ContributionController extends Controller {
      */
     public function index() {
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+                ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName', 'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution', 'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
                 ->paginate(10);
         return view('contributions.index', compact('conts'));
     }
@@ -136,13 +138,13 @@ class ContributionController extends Controller {
     }
 
     public function getUserContributions(Request $request) {
-        $data = Contribution::join('investment', 'investment.contributionId', '=', 'contribution.contribution')
-                        ->where(['contribution.userId' => $request->id, 'investment.contributionId'])->get();
+        $data = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+                        ->where(['registration.registrationId' => $request->id, 'contribution.isApproved' => 1, 'contribution.isInvested' => 0])->get();
+
         return response()->json($data);
     }
 
     public function showContribution(Request $request) {
-
         if ($request->ajax()) {
             return response(Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
                             ->find($request->contributionId));

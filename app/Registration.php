@@ -12,6 +12,7 @@ class Registration extends Model
         'firstName',
         'lastName',
         'otherNames',
+        'dateOfBirth',
         'email',
         'phoneNumber',
         'gender',
@@ -19,6 +20,7 @@ class Registration extends Model
         'nextOfKinTelephone',
         'residentialAddress',
         'occupation',
+        'image',
         'purposeOfInvesting',
         'isApproved',
         'dateOfApproval'];

@@ -116,7 +116,7 @@
                             <tbody>
                                 <tr>
                                     <td>{{$cont->firstName}} {{$cont->otherNames}} {{$cont->lastName}}</td>
-                                    <td class="txt-oflo">{{$cont->contributionAmount}}</td>
+                                    <td class="txt-oflo">GH₵ {{$cont->contributionAmount}}</td>
                                     <td>{{$cont->vendorName}}</td>
                                     <td class="txt-oflo">{{$cont->dateOfContribution}}</td>
                                     <td><span class="text-success">Mode of Payment: {{$cont->modeOfPayment}}
@@ -156,6 +156,7 @@
                             <thead>
                                 <tr>
                                     <th>CONTRIBUTOR</th>
+                                    <th>AMOUNT</th>
                                     <th>INTEREST RATE</th>
                                     <th>DATE OF CONTRIBUTION</th>
                                 </tr>
@@ -164,6 +165,7 @@
                             <tbody>
                                 <tr>
                                     <td>{{$invest->firstName}} {{$invest->otherNames}} {{$invest->lastName}}</td>
+                                    <td class="txt-oflo">GH₵ {{$invest->contributionAmount}}</td>
                                     <td class="txt-oflo">{{$invest->interestRate}}</td>
                                     <td class="txt-oflo">{{$invest->dateOfInvestment}}</td>
                                 </tr>
@@ -183,4 +185,4 @@
 </div>
 
 
-        @endsection        
+@endsection        

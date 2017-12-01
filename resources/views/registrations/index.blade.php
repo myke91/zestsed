@@ -49,7 +49,7 @@
                                     {{$reg->occupation}}
                                 </td>
                                 <td>
-                                    @if($reg->isApproved==1)
+                                    @if($reg->isApproved == 1)
                                     <i class="fa fa-check" id="checked"></i>
                                     @else
                                     <a href="{{route('approveRegistration',$reg->registrationId)}}" onclick="return confirm('Are you sure you want to approve this registration?');"><i class="fa fa-times" id="notchecked"></i></a>

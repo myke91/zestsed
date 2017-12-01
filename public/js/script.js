@@ -28,7 +28,7 @@ $(document).on('change', '#contributorId', function (e) {
 $(document).on('click', '#show-reg', function () {
     console.log('show reg details ');
     $('#registration-show').modal();
-    registrationId = $(this).val();
+    var registrationId = $(this).val();
     $.get("/show-registrationdetails", {registrationId: registrationId}, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);
@@ -50,7 +50,7 @@ $(document).on('click', '#show-reg', function () {
 });
 $(document).on('click', '#show-cont', function () {
     $('#contribution-show').modal();
-    contributionId = $(this).val();
+    var contributionId = $(this).val();
     $.get("/show-contributiondetails", {contributionId: contributionId}, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);

@@ -26,6 +26,8 @@ Route::post('/mobile/registerDevice', ['as' => 'registerDevice', 'uses' => 'Regi
 Route::post('/mobile/setPassword', ['as' => 'setPassword', 'uses' => 'Auth\LoginController@setPassword']);
 Route::post('/mobile/addContribution', ['as' => 'saveContribution', 'uses' => 'ContributionController@saveContribution']);
 Route::get('/mobile/getContributions', ['as' => 'getContributions', 'uses' => 'ContributionController@getContributions']);
+Route::get('/mobile/getInvestments',['as'=>'getInvestments','uses'=>'InvestmentController@getInvestments']);
+Route::get('/mobile/getHeaderSummary',['as'=>'getHeaderSummary','uses'=>'InvestmentController@getHeaderSummary']);
 Route::get('/mobile/profile', ['as' => 'getUserDetails', 'uses' => 'MainController@getUserDetails']);
 
 Auth::routes();
