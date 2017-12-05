@@ -31,7 +31,7 @@ use AuthenticatesUsers;
      * @return void
      */
     public function __construct() {
-        
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
     public function mobileLogin(Request $request) {
@@ -55,7 +55,7 @@ use AuthenticatesUsers;
             return response()->json(['success' => 'FIRST TIME LOGIN'], 200);
         }
         Log::error('USER NOT FOUND');
-        return Response::json(["error" => "Your registration may not have been approved yet.\n Kindly contact ZestSed office."], 401);
+        return Response::json(["error" => "USER NOT FOUND"], 401);
     }
 
     public function setPassword(Request $request) {
