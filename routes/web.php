@@ -44,4 +44,9 @@ Route::group(['middleware' => 'authen'], function () {
     Route::post('/postInvestments', ['as' => 'postInvestments', 'uses' => 'InvestmentController@postInvestments']);
     Route::get('/show-registrationdetails',['as' => 'showRegDetails', 'uses' => 'RegistrationController@showRegistration']);
     Route::get('/show-contributiondetails',['as'=>'showContributionDetails','uses'=>'ContributionController@showContribution']);
+
+    Route::get('/addUser',['as'=>'addUser','uses'=>'UserController@addUser']);
+    Route::post('/post-user', ['as' => 'postUser', 'uses' => 'UserController@postUser']);
+    Route::get('/edit-user', ['as' => 'editUser', 'uses' => 'UserController@editUser']);
+    Route::post('/update-user', ['as' => 'updateUser', 'uses' => 'UserController@updateUser']);
 });

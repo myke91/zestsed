@@ -83,3 +83,32 @@ $(document).on('click', '#show-cont', function () {
 //        }
 //
 //}
+
+$(document).on('click', '.edit_user', function (e) {
+    console.log('dataclicked');
+    $('#user-show').modal('show');
+    var id = $(this).val();
+    $.get("/edit-user", {id:id}, function (data) {
+        $('#fullname-edit').val(data.name);
+        $('#username-edit').val(data.username);
+        $('#email-edit').val(data.email);
+        $('#user-id-edit').val(data.id);
+
+    });
+});
+$('.btn-update-user').on('click', function (e) {
+    e.preventDefault();
+    var data = $('#frm-update-user').serialize();
+    var updateUser =$.post("/update-user", data, function (data) {
+        $('#user-show').modal('hide');
+
+        swal('ZESTED',
+            'User '+data.name+' updated successfully',
+            'success');
+    }).fail(function () {
+        swal('ZESTED',
+            'An error occured',
+            'error');
+    });
+
+});

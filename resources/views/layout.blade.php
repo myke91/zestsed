@@ -110,8 +110,8 @@
                                 <a href="#" class="" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                    Welcome, {{ ucfirst(Auth::user()->name) }}
                                 </a>
-
-
+                            <li><a href="{{route('addUser')}}" >
+                                    User Management</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
@@ -179,6 +179,7 @@
         <script src="js/custom.min.js"></script>
         <script src="js/dashboard1.js"></script>
         <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+        <script src="js/sweetalert.min.js"></script>
         <script src="js/script.js"></script>
         @yield('scripts')
 
