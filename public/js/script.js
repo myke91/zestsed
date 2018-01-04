@@ -83,8 +83,6 @@ $(document).on('click', '#show-cont', function () {
 //        }
 //
 //}
-<<<<<<< HEAD
-=======
 
 $(document).on('click', '.edit_user', function (e) {
     console.log('dataclicked');
@@ -114,4 +112,3 @@ $('.btn-update-user').on('click', function (e) {
     });
 
 });
->>>>>>> 5e46b170fd076f69529943a6bb928b7b96b6a2dc
