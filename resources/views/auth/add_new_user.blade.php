@@ -26,6 +26,13 @@
                                         {{session('success')}}
                                     </div>
                                 @endif
+
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        {{session('error')}}
+                                    </div>
+                                @endif
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                     <label for="name" class="col-md-4 control-label">Full Name</label>
 

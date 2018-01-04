@@ -13,10 +13,10 @@ class UserSeeeder extends Seeder {
     public function run() {
         User::create(
                 [
-                    'name' => 'kweku one',
-                    'username' => 'fred',
-                    'email' => 'fred@one.com',
-                    'password' => 'pass123'
+                    'name' => 'Super Admin',
+                    'username' => 'admin',
+                    'email' => 'admin@zestsedgh.com',
+                    'password' => '123456'
         ]);
     }
 

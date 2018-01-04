@@ -14,8 +14,20 @@ class UserController extends Controller
     }
     public function postUser(Request $request)
     {
+
+        $user = new User();
+
+                if ($user->validate($request->all())) {
+        if($request->password != $request->password_confirmation){
+        return back()->with(['error'=>'Password should match confirm password']);
+    }else{
         User::create($request->all());
         return back()->with(['success'=>'User '. $request->username .' created successfully']);
+    }
+}else{
+    $errors = $user->errors();
+    return back()->with(['error'=>$errors]);
+}
     }
 
     public function editUser(Request $request)
