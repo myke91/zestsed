@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function addUser()
     {
-        $users = User::all();
+        $users = User::where('type','=','admin')->get();
         return view('auth.add_new_user', compact('users'));
     }
     public function postUser(Request $request)
