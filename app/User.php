@@ -2,13 +2,6 @@
 
 namespace App;
 
-<<<<<<< HEAD
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable {
-=======
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -16,8 +9,6 @@ use Validator;
 
 class User extends Authenticatable
 {
->>>>>>> 5e46b170fd076f69529943a6bb928b7b96b6a2dc
-
     use HasApiTokens,
         Notifiable;
 
@@ -39,13 +30,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-<<<<<<< HEAD
-    public function setPasswordAttribute($value) {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
-    public function setRememberToken($value) {
-=======
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
@@ -53,13 +37,10 @@ class User extends Authenticatable
 
     public function setRememberToken($value)
     {
->>>>>>> 5e46b170fd076f69529943a6bb928b7b96b6a2dc
         $val = str_random(10);
         $this->attributes['remember_token'] = ($val);
     }
 
-<<<<<<< HEAD
-=======
     private $rules = array(
         'name' => 'required',
         'username' => 'required',
@@ -90,6 +71,4 @@ class User extends Authenticatable
     {
         return $this->errors;
     }
-
->>>>>>> 5e46b170fd076f69529943a6bb928b7b96b6a2dc
 }
