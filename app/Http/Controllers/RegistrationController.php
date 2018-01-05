@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use \Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
 use App\Registration;
+use Illuminate\Http\Request;
+use PushNotification;
 use \App\Device;
 use \App\User;
-use PushNotification;
+use \Illuminate\Support\Facades\Log;
 use \Illuminate\Support\Facades\Redirect;
 
-class RegistrationController extends Controller {
+class RegistrationController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $regs = Registration::paginate(10);
         return view('registrations.index', compact('regs'));
     }
@@ -27,7 +29,8 @@ class RegistrationController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -37,7 +40,8 @@ class RegistrationController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
@@ -47,13 +51,15 @@ class RegistrationController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($registrationId) {
+    public function show($registrationId)
+    {
         $reg = Registration::findOrFail($registrationId);
 
         return view('registrations.show', Compact('reg'));
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -64,7 +70,8 @@ class RegistrationController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -74,18 +81,19 @@ class RegistrationController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
 
-    public function saveRegistration(Request $request) {
+    public function saveRegistration(Request $request)
+    {
         Log::info('calling save registration from mobile application -- ' . $request->email);
         Log::info('calling save registration from mobile application -- ' . $request->dateOfBirth);
         try {
             Log::debug($request->all());
             Registration::create($request->all());
             Log::info('save successful');
-
 
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
         } catch (\Illuminate\Database\QueryException $ex) {
@@ -94,7 +102,8 @@ class RegistrationController extends Controller {
         }
     }
 
-    public function approveRegistration($id) {
+    public function approveRegistration($id)
+    {
         try {
             $customer = Registration::find($id);
             $customer->isApproved = true;
@@ -102,16 +111,16 @@ class RegistrationController extends Controller {
             Log::debug('approving registration');
             User::insert([
                 'email' => $customer->email,
-                'username'=>$customer->firstName . '.' . $customer->lastName,
+                'username' => $customer->firstName . '.' . $customer->lastName,
                 'name' => $customer->firstName . ' ' . $customer->otherNames . ' ' . $customer->lastName,
                 'password' => '',
-                'type' => 'mobile'
+                'type' => 'mobile',
             ]);
             $customer->save();
             $device = Device::where('email', $customer->email)->first();
             PushNotification::app('android')
-                    ->to($device->deviceToken)
-                    ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
+                ->to($device->deviceToken)
+                ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
             return Redirect::action('RegistrationController@index');
         } catch (\Illuminate\Database\QueryException $ex) {
             Log::debug($ex);
@@ -120,17 +129,16 @@ class RegistrationController extends Controller {
         }
     }
 
-    public function registerDevice(Request $request) {
+    public function registerDevice(Request $request)
+    {
         Log::info('calling register device from mobile application -- ' . $request->email);
         if ($request->token != null || $request->token != '') {
             try {
                 $user = Registration::where('email', $request->email)->first();
-                Log::debug($user);
-                Log::debug($request);
                 $data = [
                     'deviceToken' => $request->token,
                     'email' => $request->email,
-                    'userId' => $user->registrationId
+                    'userId' => $user->registrationId,
                 ];
                 Device::updateOrCreate(['email' => $request->email], $data);
                 Log::info('device registration successful');
@@ -142,7 +150,8 @@ class RegistrationController extends Controller {
         }
     }
 
-    public function showRegistration(Request $request) {
+    public function showRegistration(Request $request)
+    {
 
         if ($request->ajax()) {
             return response(Registration::find($request->registrationId));
