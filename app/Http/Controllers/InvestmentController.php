@@ -2,36 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Contribution;
 use App\Investment;
 use App\Registration;
-use App\Contribution;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class InvestmentController extends Controller {
+class InvestmentController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
-                ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
-                ->paginate(10);
+            ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
+            ->paginate(10);
         return view('investments.index', compact('invests'));
     }
 
-    public function create() {
-        
+    public function create()
+    {
+
     }
 
-    public function createInvestment() {
+    public function createInvestment()
+    {
         $regs = Registration::all();
         return view('investments.addInvestment', compact('regs'));
     }
 
-    public function postInvestments(Request $request) {
+    public function postInvestments(Request $request)
+    {
         //return $request->all();
         try {
             Investment::create($request->all());
@@ -42,8 +47,9 @@ class InvestmentController extends Controller {
         }
     }
 
-    public function store(Request $request) {
-        
+    public function store(Request $request)
+    {
+
     }
 
     /**
@@ -52,7 +58,8 @@ class InvestmentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         //
     }
 
@@ -62,7 +69,8 @@ class InvestmentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         //
     }
 
@@ -73,7 +81,8 @@ class InvestmentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -83,32 +92,38 @@ class InvestmentController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         //
     }
 
-    public function getInvestments(Request $request) {
+    public function getInvestments(Request $request)
+    {
 
         $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
-                        ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
-                        ->select('contribution.contributionAmount as amount', 'investment.interestRate as rate', 'investment.dateOfInvestment as dateOfInvestment')
-                        ->where('registration.email', '=', $request->email)->get();
+            ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
+            ->select('contribution.contributionAmount as amount', 'investment.interestRate as rate', 'investment.dateOfInvestment as dateOfInvestment')
+            ->where('registration.email', '=', $request->email)->get();
 
         return response()->json($invests);
     }
 
-    public function getHeaderSummary(Request $request) {
-        $openingBalance = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
-                        ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
-                        ->where('registration.email', '=', $request->email)
-                        ->orderBy('created_at', 'ASC')
-                        ->first()->contributionAmount;
+    public function getHeaderSummary(Request $request)
+    {
+        $openingBalance = 0.00;
+        $result = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+            ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
+            ->where('registration.email', '=', $request->email)
+            ->orderBy('created_at', 'ASC')
+            ->first();
+        if ($result != null) {
+            $openingBalance = $result->contributionAmount;
+        }
 
         $totalContributions = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
-                ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
-                ->where('registration.email', '=', $request->email)
-                ->sum('contributionAmount');
-
+            ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
+            ->where('registration.email', '=', $request->email)
+            ->sum('contributionAmount');
 
         $data = ['openingBalance' => $openingBalance, 'totalContributions' => $totalContributions];
         return response()->json($data);
