@@ -1,24 +1,24 @@
 $(document).ready(function () {
     "use strict";
     // toat popup js
-//     $.toast({
-//         heading: 'Welcome to Ample admin',
-//         text: 'Use the predefined ones, or specify a custom position object.',
-//         position: 'top-right',
-//         loaderBg: '#fff',
-//         icon: 'warning',
-//         hideAfter: 3500,
-//         stack: 6
-//     })
+    //     $.toast({
+    //         heading: 'Welcome to Ample admin',
+    //         text: 'Use the predefined ones, or specify a custom position object.',
+    //         position: 'top-right',
+    //         loaderBg: '#fff',
+    //         icon: 'warning',
+    //         hideAfter: 3500,
+    //         stack: 6
+    //     })
 
 
     //ct-visits
     new Chartist.Line('#ct-visits', {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         series: [
-            [5, 2, 7, 4, 5, 3, 5, 4, 4, 0, 3, 8]
-                    , [2, 5, 2, 6, 2, 5, 2, 4, 4, 2, 6, 5]
-                    , [5, 8, 2, 1, 9, 5, 2, 5, 1, 7, 3, 9]
+            [5, 2, 7, 4, 5, 3, 5, 4, 4, 0, 3, 8],
+            [2, 5, 2, 6, 2, 5, 2, 4, 4, 2, 6, 5],
+            [5, 8, 2, 1, 9, 5, 2, 5, 1, 7, 3, 9]
         ]
     }, {
         top: 0,
