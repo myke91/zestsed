@@ -114,7 +114,8 @@ class InvestmentController extends Controller
         $result = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
             ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
             ->where('registration.email', '=', $request->email)
-            ->orderBy('created_at', 'ASC')
+            ->where('contribution.isApproved', '=',1)
+            ->orderBy('created_at', 'DESC')
             ->first();
         if ($result != null) {
             $openingBalance = $result->contributionAmount;
@@ -123,6 +124,7 @@ class InvestmentController extends Controller
         $totalContributions = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
             ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
             ->where('registration.email', '=', $request->email)
+            ->where('contribution.isApproved', '=',1)
             ->sum('contributionAmount');
 
         $data = ['openingBalance' => $openingBalance, 'totalContributions' => $totalContributions];

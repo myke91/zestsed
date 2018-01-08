@@ -45,24 +45,4 @@ class MainController extends Controller
         DB::query($query);
     }
 
-    public function updateProfilePicture(Request $request)
-    {
-        Log::info('Updating user profile image for user ' . $request->email);
-        $imageData = $request->image;
-        $email = $request->email;
-
-        try {
-            $profile = Registration::where('email', '=', $email)->first();
-            $profile->image = $imageData;
-            $profile->save();
-            Log::info('Updating user profile image successful');
-            return response()->json(['success' => 'Image update successful'], 200);
-        } catch (\Exception $ex) {
-            Log::info('Updating user profile image failed');
-            Log::error($ex);
-            return response()->json(['error' => 'Image update failed'], 500);
-        }
-
-    }
-
 }
