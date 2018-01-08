@@ -29,7 +29,7 @@ Route::get('/mobile/getContributions', ['as' => 'getContributions', 'uses' => 'C
 Route::get('/mobile/getInvestments',['as'=>'getInvestments','uses'=>'InvestmentController@getInvestments']);
 Route::get('/mobile/getHeaderSummary',['as'=>'getHeaderSummary','uses'=>'InvestmentController@getHeaderSummary']);
 Route::get('/mobile/profile', ['as' => 'getUserDetails', 'uses' => 'MainController@getUserDetails']);
-Route::post('/mobile/update/image',['as'=>'updateProfilePicture','uses'=>'MainController@updateProfilePicture']);
+Route::post('/mobile/update/coverImage',['as'=>'updateProfilePicture','uses'=>'MainController@updateProfilePicture']);
 
 Auth::routes();
 
