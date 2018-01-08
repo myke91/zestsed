@@ -89,7 +89,6 @@ class RegistrationController extends Controller
     public function saveRegistration(Request $request)
     {
         Log::info('calling save registration from mobile application -- ' . $request->email);
-        Log::info('calling save registration from mobile application -- ' . $request->dateOfBirth);
         try {
             Log::debug($request->all());
             Registration::create($request->all());
