@@ -119,7 +119,7 @@ class RegistrationController extends Controller
             $device = Device::where('email', $customer->email)->first();
             PushNotification::app('android')
                 ->to($device->deviceToken)
-                ->send("Your registration has been approved. \n Login with your email and any password to set a new password");
+                ->send("Your registration has been approved. \n Login with your email and any password to set a password");
             return Redirect::action('RegistrationController@index');
         } catch (\Illuminate\Database\QueryException $ex) {
             Log::debug($ex);

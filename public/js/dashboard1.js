@@ -16,7 +16,6 @@ $(document).ready(function () {
     new Chartist.Line('#ct-visits', {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         series: [
-            [5, 2, 7, 4, 5, 3, 5, 4, 4, 0, 3, 8],
             [2, 5, 2, 6, 2, 5, 2, 4, 4, 2, 6, 5],
             [5, 8, 2, 1, 9, 5, 2, 5, 1, 7, 3, 9]
         ]

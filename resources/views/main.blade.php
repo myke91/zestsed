@@ -96,10 +96,6 @@
 					<ul class="list-inline text-right">
 						<li>
 							<h5>
-								<i class="fa fa-circle m-r-5 text-success"></i>Registration</h5>
-						</li>
-						<li></li>
-							<h5>
 								<i class="fa fa-circle m-r-5 text-info"></i>Contributions</h5>
 						</li>
 						<li>

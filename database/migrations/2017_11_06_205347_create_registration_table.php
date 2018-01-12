@@ -26,11 +26,12 @@ class CreateRegistrationTable extends Migration {
             $table->string('residentialAddress')->nullable();
             $table->string('occupation')->nullable();
             $table->string('purposeOfInvesting')->nullable();
-            $table->binary('image')->nullable();
             $table->boolean('isApproved')->default(false);
             $table->date('dateOfApproval')->nullable();
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE registration ADD image LONGBLOB');
     }
 
     /**

@@ -45,7 +45,6 @@ class LoginController extends Controller
         $user = User::where('email', trim($email))->first();
 
         if (!is_null($user)) {
-            Log::debug($user);
             if ($user->password != '') {
                 if (Hash::check($password, $user->password)) {
                     Log::info('LOGIN SUCCESSFUL');
@@ -58,7 +57,7 @@ class LoginController extends Controller
             return response()->json(['success' => 'FIRST TIME LOGIN'], 200);
         }
         Log::error('USER NOT FOUND');
-        return Response::json(["error" => "Your registration may not have been approved yet.\n Kindly contact ZestSed office."], 401);
+        return Response::json("Your registration may not have been approved yet, if you entered the right email.\n Kindly contact ZestSed office.", 401);
     }
 
     public function setPassword(Request $request)
@@ -69,7 +68,7 @@ class LoginController extends Controller
                 ->update(['password' => bcrypt($request->password)]);
             return response()->json(['success' => 'Request successful'], 200);
         } catch (Exception $ex) {
-            return response()->json(['error' => 'Error occured while setting new password'], 500);
+            return response()->json('Error occured while setting new password', 500);
         }
     }
 

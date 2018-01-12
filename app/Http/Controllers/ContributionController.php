@@ -131,7 +131,6 @@ class ContributionController extends Controller {
     public function getContributions(Request $request) {
         Log::info('calling get contributions ' . $request->email);
         $user = Registration::where('email', $request->email)->first();
-        Log::debug($user);
         $data = Contribution::where(['userId' => $user->registrationId, 'isApproved' => 1])->get();
         Log::debug($data);
         return response()->json($data, 200);
