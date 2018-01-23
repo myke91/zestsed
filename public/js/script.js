@@ -6,17 +6,24 @@
 
 
 $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    }).ajaxStart(function () {
+        $("#ajaxSpinnerContainer").show();
+    })
+    .ajaxStop(function () {
+        $("#ajaxSpinnerContainer").hide();
     });
-});
 $(document).on('change', '#contributorId', function (e) {
     e.preventDefault();
     console.log('getting user contributions');
     var key = $('#contributorId').val();
-    $.get('/getUserContributions', {id: key}, function (data) {
+    $.get('/getUserContributions', {
+        id: key
+    }, function (data) {
         console.log(data);
         $.each(data, function (i, value) {
             $('#contributionId').append($('<option>').text(value.dateOfContribution + " => GHC " + value.contributionAmount).attr('value', value.contributionId));
@@ -29,7 +36,9 @@ $(document).on('click', '#show-reg', function () {
     console.log('show reg details ');
     $('#registration-show').modal();
     var registrationId = $(this).val();
-    $.get("/show-registrationdetails", {registrationId: registrationId}, function (data) {
+    $.get("/show-registrationdetails", {
+        registrationId: registrationId
+    }, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);
         $('#otherNames').val(data.otherNames);
@@ -51,7 +60,9 @@ $(document).on('click', '#show-reg', function () {
 $(document).on('click', '#show-cont', function () {
     $('#contribution-show').modal();
     var contributionId = $(this).val();
-    $.get("/show-contributiondetails", {contributionId: contributionId}, function (data) {
+    $.get("/show-contributiondetails", {
+        contributionId: contributionId
+    }, function (data) {
         $('#firstName').val(data.firstName);
         $('#lastName').val(data.lastName);
         $('#otherNames').val(data.otherNames);
@@ -88,7 +99,9 @@ $(document).on('click', '.edit_user', function (e) {
     console.log('dataclicked');
     $('#user-show').modal('show');
     var id = $(this).val();
-    $.get("/edit-user", {id:id}, function (data) {
+    $.get("/edit-user", {
+        id: id
+    }, function (data) {
         $('#fullname-edit').val(data.name);
         $('#username-edit').val(data.username);
         $('#email-edit').val(data.email);
@@ -99,11 +112,11 @@ $(document).on('click', '.edit_user', function (e) {
 $('.btn-update-user').on('click', function (e) {
     e.preventDefault();
     var data = $('#frm-update-user').serialize();
-    var updateUser =$.post("/update-user", data, function (data) {
+    var updateUser = $.post("/update-user", data, function (data) {
         $('#user-show').modal('hide');
 
         swal('ZESTED',
-            'User '+data.name+' updated successfully',
+            'User ' + data.name + ' updated successfully',
             'success');
     }).fail(function () {
         swal('ZESTED',

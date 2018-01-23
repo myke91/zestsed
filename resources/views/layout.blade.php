@@ -201,22 +201,6 @@
         <script src="js/script.js"></script>
         
         @yield('scripts')
-        <script>
-            $(document).ready(function () {
-        $.ajaxSetup({
-        headers: {
-         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-         }
-        });
-        
-        }).ajaxStart(function () {
-            $("#ajaxSpinnerContainer").show();
-            })
-            .ajaxStop(function () {
-             $("#ajaxSpinnerContainer").hide();
-        });
-        
-        </script>
     </body>
 
 </html>
