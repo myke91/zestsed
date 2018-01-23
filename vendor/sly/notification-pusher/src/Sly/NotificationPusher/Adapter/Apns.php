@@ -87,11 +87,6 @@ class Apns extends BaseAdapter implements FeedbackAdapterInterface
 
                 if (ServiceResponse::RESULT_OK === $response->getCode()) {
                     $pushedDevices->add($device);
-                } else {
-                    $this->openedClient->close();
-                    unset($this->openedClient);
-                    // Assign returned new client to the in-scope/in-use $client variable
-                    $client = $this->getOpenedServiceClient();
                 }
 
                 $this->response->addOriginalResponse($device, $response);
@@ -126,16 +121,12 @@ class Apns extends BaseAdapter implements FeedbackAdapterInterface
     /**
      * Get opened client.
      *
-     * @param \ZendService\Apple\Apns\Client\AbstractClient|null $client Client
+     * @param \ZendService\Apple\Apns\Client\AbstractClient $client Client
      *
      * @return \ZendService\Apple\Apns\Client\AbstractClient
      */
-    public function getOpenedClient(ServiceAbstractClient $client = null)
+    public function getOpenedClient(ServiceAbstractClient $client)
     {
-        if (!$client) {
-            $client = new ServiceClient();
-        }
-
         $client->open(
             $this->isProductionEnvironment() ? ServiceClient::PRODUCTION_URI : ServiceClient::SANDBOX_URI,
             $this->getParameter('certificate'),

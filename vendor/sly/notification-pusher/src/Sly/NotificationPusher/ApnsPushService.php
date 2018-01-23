@@ -152,11 +152,6 @@ class ApnsPushService extends AbstractPushService
     }
 
     /**
-     * The Apple Push Notification service includes a feedback service to give you information
-     * about failed remote notifications. When a remote notification cannot be delivered
-     * because the intended app does not exist on the device,
-     * the feedback service adds that device’s token to its list.
-     *
      * @return array
      */
     public function getFeedback()
@@ -178,13 +173,16 @@ class ApnsPushService extends AbstractPushService
         }
 
         $feedbackTokens = array_keys($this->feedback);
+        $sentTokens     = array_keys($this->response->getParsedResponses());
 
         //all bad
-        if ($feedbackTokens) {
-            return $feedbackTokens;
+        if (!$feedbackTokens) {
+            return $sentTokens;
         }
 
-        return [];
+        $tokens = array_diff($sentTokens, $feedbackTokens);
+
+        return $tokens;
     }
 
     /**
@@ -205,10 +203,10 @@ class ApnsPushService extends AbstractPushService
 
         //all bad
         if (!$feedbackTokens) {
-            return $sentTokens;
+            return [];
         }
 
-        $tokens = array_diff($sentTokens, $feedbackTokens);
+        $tokens = array_intersect($sentTokens, $feedbackTokens);
 
         return $tokens;
     }

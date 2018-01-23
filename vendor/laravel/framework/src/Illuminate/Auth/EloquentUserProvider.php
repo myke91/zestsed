@@ -2,10 +2,10 @@
 
 namespace Illuminate\Auth;
 
-use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class EloquentUserProvider implements UserProvider
 {
@@ -64,7 +64,7 @@ class EloquentUserProvider implements UserProvider
 
         $model = $model->where($model->getAuthIdentifierName(), $identifier)->first();
 
-        if (!$model) {
+        if (! $model) {
             return null;
         }
 
@@ -101,7 +101,9 @@ class EloquentUserProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        if (empty($credentials)) {
+        if (empty($credentials) ||
+           (count($credentials) === 1 &&
+            array_key_exists('password', $credentials))) {
             return;
         }
 
@@ -111,7 +113,7 @@ class EloquentUserProvider implements UserProvider
         $query = $this->createModel()->newQuery();
 
         foreach ($credentials as $key => $value) {
-            if (!Str::contains($key, 'password')) {
+            if (! Str::contains($key, 'password')) {
                 $query->where($key, $value);
             }
         }
@@ -128,12 +130,9 @@ class EloquentUserProvider implements UserProvider
      */
     public function validateCredentials(UserContract $user, array $credentials)
     {
-        \Log::debug('checking login against');
-        \Log::debug($user);
-        if ($user->type == 'admin') {
-            $plain = $credentials['password'];
-            return $this->hasher->check($plain, $user->getAuthPassword());
-        }
+        $plain = $credentials['password'];
+
+        return $this->hasher->check($plain, $user->getAuthPassword());
     }
 
     /**
@@ -143,7 +142,7 @@ class EloquentUserProvider implements UserProvider
      */
     public function createModel()
     {
-        $class = '\\' . ltrim($this->model, '\\');
+        $class = '\\'.ltrim($this->model, '\\');
 
         return new $class;
     }
