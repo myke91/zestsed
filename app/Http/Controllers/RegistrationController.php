@@ -112,7 +112,6 @@ class RegistrationController extends Controller
                 'email' => $customer->email,
                 'username' => $customer->firstName . '.' . $customer->lastName,
                 'name' => $customer->firstName . ' ' . $customer->otherNames . ' ' . $customer->lastName,
-                'password' => '',
                 'type' => 'mobile',
             ]);
             $customer->save();
@@ -130,21 +129,23 @@ class RegistrationController extends Controller
 
     public function registerDevice(Request $request)
     {
-        Log::info('calling register device from mobile application -- ' . $request->email);
-        if ($request->token != null || $request->token != '') {
-            try {
-                $user = Registration::where('email', $request->email)->first();
-                $data = [
-                    'deviceToken' => $request->token,
-                    'email' => $request->email,
-                    'userId' => $user->registrationId,
-                ];
-                Device::updateOrCreate(['email' => $request->email], $data);
-                Log::info('device registration successful');
-                return response()->json(['success' => 'DEVICE REGISTRATION SUCCESSFUL'], 200);
-            } catch (\Illuminate\Database\QueryException $ex) {
-                Log::info('save error');
-                return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
+        if (is_null(Device::where(['email' => $request->email])->first())) {
+            Log::info('calling register device from mobile application -- ' . $request->email);
+            if ($request->token != null || $request->token != '') {
+                try {
+                    $user = Registration::where('email', $request->email)->first();
+                    $data = [
+                        'deviceToken' => $request->token,
+                        'email' => $request->email,
+                        'userId' => $user->registrationId,
+                    ];
+                    Device::updateOrCreate(['email' => $request->email], $data);
+                    Log::info('device registration successful');
+                    return response()->json(['success' => 'DEVICE REGISTRATION SUCCESSFUL'], 200);
+                } catch (\Illuminate\Database\QueryException $ex) {
+                    Log::info('save error');
+                    return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
+                }
             }
         }
     }

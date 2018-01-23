@@ -113,14 +113,33 @@
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12">
 				<div class="white-box">
-					<div class="col-md-3 col-sm-4 col-xs-6 pull-right">
-						<select class="form-control pull-right row b-none">
-							<option>March 2017</option>
-							<option>April 2017</option>
-							<option>May 2017</option>
-							<option>June 2017</option>
-							<option>July 2017</option>
-						</select>
+					<div class="row col-md-3 col-sm-4 col-xs-6 pull-right">
+						<form class="form-horizontal">
+							<div class="col-md-4">
+								<select class="form-control month">
+									<option>Jan</option>
+									<option>Feb</option>
+									<option>Mar</option>
+									<option>Apr</option>
+									<option>May</option>
+									<option>Jun</option>
+									<option>Jul</option>
+									<option>Aug</option>
+									<option>Sep</option>
+									<option>Oct</option>
+									<option>Nov</option>
+									<option>Dec</option>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control year" type="text" placeholder="YEAR" />
+							</div>
+							<div class="col-md-4">
+								<button class="btn btn-info contribution-filter" type="button">
+									<i class="fa fa-search">SEARCH</i>
+								</button>
+							</div>
+						</form>
 					</div>
 					<h3 class="box-title">List of Contributions</h3>
 					<div class="table-responsive">
@@ -163,14 +182,33 @@
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12">
 				<div class="white-box">
-					<div class="col-md-3 col-sm-4 col-xs-6 pull-right">
-						<select class="form-control pull-right row b-none">
-							<option>March 2017</option>
-							<option>April 2017</option>
-							<option>May 2017</option>
-							<option>June 2017</option>
-							<option>July 2017</option>
-						</select>
+					<div class="row col-md-3 col-sm-4 col-xs-6 pull-right">
+						<form class="form-horizontal">
+							<div class="col-md-4">
+								<select class="form-control month">
+									<option>Jan</option>
+									<option>Feb</option>
+									<option>Mar</option>
+									<option>Apr</option>
+									<option>May</option>
+									<option>Jun</option>
+									<option>Jul</option>
+									<option>Aug</option>
+									<option>Sep</option>
+									<option>Oct</option>
+									<option>Nov</option>
+									<option>Dec</option>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control year" type="text" placeholder="YEAR" />
+							</div>
+							<div class="col-md-4">
+								<button class="btn btn-info investment-filter" type="button">
+									<i class="fa fa-search">SEARCH</i>
+								</button>
+							</div>
+						</form>
 					</div>
 					<h3 class="box-title">List of Investments</h3>
 					<div class="table-responsive">
@@ -178,18 +216,20 @@
 							<thead>
 								<tr>
 									<th>CONTRIBUTOR</th>
-									<th>AMOUNT</th>
-									<th>INTEREST RATE</th>
-									<th>DATE OF CONTRIBUTION</th>
+									<th>QUOTA AMOUNT</th>
+									<th>CURRENT VALUE</th>
+									<th>INVESTMENT PERIOD</th>
+									<th>CYCLE PERIOD</th>
 								</tr>
 							</thead>
 							@foreach($invests as $invest)
 							<tbody>
 								<tr>
 									<td>{{$invest->firstName}} {{$invest->otherNames}} {{$invest->lastName}}</td>
-									<td class="txt-oflo">GH₵ {{$invest->contributionAmount}}</td>
-									<td class="txt-oflo">{{$invest->interestRate}}</td>
-									<td class="txt-oflo">{{$invest->dateOfInvestment}}</td>
+									<td class="txt-oflo">GH₵ {{$invest->quotaAmount}}</td>
+									<td class="txt-oflo">GH₵ {{$invest->quotaWithInterest}}</td>
+									<td class="txt-oflo">{{$invest->quotaMonth}} {{$invest->quotaYear}}</td>
+									<td class="txt-oflo">{{$invest->cycleMonth}} {{$invest->cycleYear}}</td>
 								</tr>
 							</tbody>
 							@endforeach

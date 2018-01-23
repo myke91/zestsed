@@ -4,20 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Investment extends Model {
+class Investment extends Model
+{
 
     protected $table = 'investment';
     protected $fillable = [
-        'investmentId',
-        'interestRate',
-        'dateOfInvestment',
-        'contributionId'
+        'memberId',
+        'quotaMonth',
+        'quotaYear',
+        'cycleMonth',
+        'cycleYear',
+        'quotaAmount',
+        'quotaRollover',
+        'quotaWithInterest',
+        'interestAmount',
+        'cumulativeInterest',
     ];
     protected $primaryKey = 'investmentId';
     public $timestamps = true;
-
-    public function contribution() {
-        return $this->belongsTo('App\Contribution', 'contributionId', 'contributionId');
-    }
 
 }

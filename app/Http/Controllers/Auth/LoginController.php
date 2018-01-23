@@ -43,12 +43,13 @@ class LoginController extends Controller
         $password = $request->get('password');
 
         $user = User::where('email', trim($email))->first();
+        Log::debug($user);
+        Log::debug("check password exist ".isset($user->password));
 
         if (!is_null($user)) {
-            if ($user->password != '') {
+            if (isset($user->password)) {
                 if (Hash::check($password, $user->password)) {
                     Log::info('LOGIN SUCCESSFUL');
-
                     return response()->json(['success' => "SUCCESS"], 200);
                 }
                 Log::info('INVALID PASSWORD');

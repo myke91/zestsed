@@ -28,6 +28,6 @@ class Registration extends Model
     public $timestamps = true;
     
      public function contributions() {
-        return $this->hasMany('App\Contribution', 'userId', 'registration');
+        return $this->hasMany('App\Contribution', 'memberId', 'registration');
     }
 }

@@ -15,10 +15,17 @@ class CreateInvestmentTable extends Migration
     {
         Schema::create('investment', function (Blueprint $table) {
             $table->increments('investmentId');
-            $table->decimal('interestRate',10,2);
-            $table->date('dateOfInvestment');
-            $table->integer('contributionId')->unsigned();
-            $table->foreign('contributionId')->references('contributionId')->on('contribution');
+            $table->integer('memberId')->unsigned();
+            $table->string('quotaMonth');
+            $table->string('quotaYear');
+            $table->string('cycleMonth')->nullable();
+            $table->string('cycleYear')->nullable();
+            $table->decimal('quotaAmount',12,2)->default(0.00);
+            $table->decimal('quotaRollover',12,2)->default(0.00);
+            $table->decimal('quotaWithInterest',12,2)->default(0.00);
+            $table->decimal('interestAmount',12,2)->default(0.00);
+            $table->decimal('cumulativeInterest',12,2)->default(0.00);
+            $table->foreign('memberId')->references('registrationId')->on('registration');
             $table->timestamps();
         });
     }

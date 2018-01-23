@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contribution;
 use App\Investment;
 use App\Registration;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -18,8 +19,8 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
-            ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
+        $invests = Investment::join('registration', 'registration.registrationId', '=', 'investment.memberId')
+            ->where(['quotaMonth' => date('M'), 'quotaYear' => date('Y')])
             ->paginate(10);
         return view('investments.index', compact('invests'));
     }
@@ -100,10 +101,10 @@ class InvestmentController extends Controller
     public function getInvestments(Request $request)
     {
 
-        $invests = Investment::join('contribution', 'contribution.contributionId', '=', 'investment.contributionId')
-            ->join('registration', 'registration.registrationId', '=', 'contribution.userId')
-            ->select('contribution.contributionAmount as amount', 'investment.interestRate as rate', 'investment.dateOfInvestment as dateOfInvestment')
-            ->where('registration.email', '=', $request->email)->get();
+        $invests = Investment::join('registration', 'registration.registrationId', '=', 'investment.memberId')
+            ->where('registration.email', '=', $request->email)
+            ->orderBy('investment.created_at', 'DESC')
+            ->get();
 
         return response()->json($invests);
     }
@@ -111,7 +112,7 @@ class InvestmentController extends Controller
     public function getHeaderSummary(Request $request)
     {
         $openingBalance = 0.00;
-        $result = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+        $result = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
             ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
             ->where('registration.email', '=', $request->email)
             ->where('contribution.isApproved', '=', 1)
@@ -121,20 +122,64 @@ class InvestmentController extends Controller
             $openingBalance = $result->contributionAmount;
         }
 
-        $totalContributions = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
+        $totalContributions = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
             ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
             ->where('registration.email', '=', $request->email)
             ->where('contribution.isApproved', '=', 1)
             ->sum('contributionAmount');
 
-        $totalInterest = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.userId')
-            ->select('contribution.contributionAmount as contributionAmount', 'contribution.created_at as created_at')
+        $totalInterest = Investment::join('registration', 'registration.registrationId', '=', 'investment.memberId')
+            ->select('cumulativeInterest')
             ->where('registration.email', '=', $request->email)
-            ->where('contribution.isApproved', '=', 1)
-            ->sum('contributionAmount');
+            ->sum('cumulativeInterest');
 
         $data = ['openingBalance' => $openingBalance, 'totalContributions' => $totalContributions, 'totalInterest' => $totalInterest];
         return response()->json($data);
     }
 
+    public function getInvestmentsForPeriod(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+
+        $invests = Investment::join('registration', 'registration.registrationId', '=', 'investment.memberId')
+            ->where(['quotaMonth' => $month, 'quotaYear' => $year])->paginate(0);
+        return response()->json($invests);
+    }
+
+    public function processEndOfMonthOperation(Request $request)
+    {
+        for ($i = 0; $i < count($request->batch); $i++) {
+            $id = $request->batch[$i];
+            try {
+                $investment = Investment::find($id);
+                if ($investment->quotaRollover == 0.00) {
+                    $interest = 0.04 * $investment->quotaAmount;
+                    $investment->interestAmount = $interest;
+                    $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
+                    $nextCycleDate = $date->addMonth();
+                    $investment->cycleMonth = $nextCycleDate->format('M');
+                    $investment->cycleYear = $nextCycleDate->year;
+                    $investment->quotaRollover = $investment->quotaAmount + $interest;
+                    $investment->quotaWithInterest = $investment->quotaAmount + $interest;
+                    $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+                    $investment->save();
+                } else {
+                    $interest = 0.04 * $investment->quotaRollover;
+                    $investment->interestAmount = $interest;
+                    $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');
+                    $nextCycleDate = $date->addMonth();
+                    $investment->cycleMonth = $nextCycleDate->format('M');
+                    $investment->cycleYear = $nextCycleDate->year;
+                    $investment->quotaRollover = $investment->quotaRollover + $interest;
+                    $investment->quotaWithInterest = $investment->quotaRollover + $interest;
+                    $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+                    $investment->save();
+                }
+            } catch (\Exception $ex) {
+                Log::debug($ex);
+                return response()->json($ex, 500);
+            }
+        }
+    }
 }

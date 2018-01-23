@@ -16,13 +16,13 @@ class Contribution extends Model {
         'contributionAmount',
         'isApproved',
         'dateOfApproval',
-        'userId'
+        'memberId'
     ];
     protected $primaryKey = 'contributionId';
     public $timestamps = true;
 
     public function user() {
-        return $this->belongsTo('App\Registration', 'userId', 'registrationId');
+        return $this->belongsTo('App\Registration', 'memberId', 'registrationId');
     }
 
     public function investments() {

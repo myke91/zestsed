@@ -22,8 +22,8 @@ class CreateContributionTable extends Migration {
             $table->boolean('isApproved')->default(false);
             $table->date('dateOfApproval')->nullable();
             $table->boolean('isInvested')->default(false);
-            $table->integer('userId')->unsigned();
-            $table->foreign('userId')->references('registrationId')->on('registration');
+            $table->integer('memberId')->unsigned();
+            $table->foreign('memberId')->references('registrationId')->on('registration');
             $table->timestamps();
         });
     }
