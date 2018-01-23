@@ -18,6 +18,8 @@ class UserSeeeder extends Seeder {
                     'email' => 'admin@zestsedgh.com',
                     'password' => '123456'
         ]);
+
+        echo Hash::make('B$Cc3U^V');
     }
 
 }

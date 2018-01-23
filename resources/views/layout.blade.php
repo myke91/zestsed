@@ -37,6 +37,24 @@
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <![endif]-->
+
+    <style>
+		#ajaxSpinnerContainer {
+			position: fixed;
+			top: 0px;
+			right: 0px;
+			width: 100%;
+			height: 100%;
+			background-color: #666;
+			background-image: url('img/loader.gif');
+			background-repeat: no-repeat;
+			background-position: center;
+			z-index: 10000000;
+			opacity: 0.4;
+			filter: alpha(opacity=40);
+			/* For IE8 and earlier */
+		}
+	</style>
     </head>
 
     <body class="fix-header">
@@ -181,8 +199,24 @@
         <script src="plugins/bower_components/toast-master/js/jquery.toast.js"></script>
         <script src="js/sweetalert.min.js"></script>
         <script src="js/script.js"></script>
+        
         @yield('scripts')
-
+        <script>
+            $(document).ready(function () {
+        $.ajaxSetup({
+        headers: {
+         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+         }
+        });
+        
+        }).ajaxStart(function () {
+            $("#ajaxSpinnerContainer").show();
+            })
+            .ajaxStop(function () {
+             $("#ajaxSpinnerContainer").hide();
+        });
+        
+        </script>
     </body>
 
 </html>
