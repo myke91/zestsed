@@ -65,7 +65,7 @@ class UserController extends Controller
     public function updateProfileInfo(Request $request)
     {
         try {
-            Registration::update(['email' => $request->previousEmail], $request->all());
+            Registration::updateOrCreate(['email' => $request->previousEmail], $request->all());
             Device::where('email', $request->previousEmail)->update(['email' => $request->email]);
             User::where('email', $request->previousEmail)->update(['email' => $request->email]);
             return response()->json(['success' => 'Profile updated successfully']);
