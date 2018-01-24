@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Registration;
 use App\User;
+use App\Device;
 use Illuminate\Http\Request;
 use \Log;
 
@@ -64,6 +65,7 @@ class UserController extends Controller
 
     public function updateProfileInfo(Request $request)
     {
+        Log::debug($request);
         try {
             Registration::updateOrCreate(['email' => $request->previousEmail], $request->all());
             Device::where('email', $request->previousEmail)->update(['email' => $request->email]);
