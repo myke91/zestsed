@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Registration;
 use App\User;
 use Illuminate\Http\Request;
-use App\Registration;
 use \Log;
 
 class UserController extends Controller
@@ -65,8 +65,9 @@ class UserController extends Controller
     public function updateProfileInfo(Request $request)
     {
         try {
-            // $id = Registration::where(['email' => $request->previousEmail])->first();
-            Registration::updateOrCreate(['email'=>$request->previousEmail], $request->all());
+            Registration::update(['email' => $request->previousEmail], $request->all());
+            Device::where('email', $request->previousEmail)->update(['email' => $request->email]);
+            User::where('email', $request->previousEmail)->update(['email' => $request->email]);
             return response()->json(['success' => 'Profile updated successfully']);
         } catch (\Exception $ex) {
             Log::debug($ex);
