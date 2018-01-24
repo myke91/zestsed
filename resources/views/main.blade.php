@@ -116,23 +116,23 @@
 					<div class="row col-md-3 col-sm-4 col-xs-6 pull-right">
 						<form class="form-horizontal">
 							<div class="col-md-4">
-								<select class="form-control month">
-									<option>Jan</option>
-									<option>Feb</option>
-									<option>Mar</option>
-									<option>Apr</option>
-									<option>May</option>
-									<option>Jun</option>
-									<option>Jul</option>
-									<option>Aug</option>
-									<option>Sep</option>
-									<option>Oct</option>
-									<option>Nov</option>
-									<option>Dec</option>
+								<select class="form-control contrib-month">
+									<option value="1">Jan</option>
+									<option value="2">Feb</option>
+									<option value="3">Mar</option>
+									<option value="4">Apr</option>
+									<option value="5">May</option>
+									<option value="6">Jun</option>
+									<option value="7">Jul</option>
+									<option value="8">Aug</option>
+									<option value="9">Sep</option>
+									<option value="10">Oct</option>
+									<option value="11">Nov</option>
+									<option value="12">Dec</option>
 								</select>
 							</div>
 							<div class="col-md-4">
-								<input class="form-control year" type="text" placeholder="YEAR" />
+								<input class="form-control contrib-year" type="text" placeholder="YEAR" />
 							</div>
 							<div class="col-md-4">
 								<button class="btn btn-info contribution-filter" type="button">
@@ -143,7 +143,7 @@
 					</div>
 					<h3 class="box-title">List of Contributions</h3>
 					<div class="table-responsive">
-						<table class="table">
+						<table class="contributions-table table">
 							<thead>
 								<tr>
 									<th>NAME</th>
@@ -169,7 +169,7 @@
 						</table>
 					</div>
 					<div class="row">
-						<div class="col-md-10 ">
+						<div class="col-md-10 contrib-page-links">
 							{{$conts->links()}}
 						</div>
 					</div>
@@ -185,7 +185,7 @@
 					<div class="row col-md-3 col-sm-4 col-xs-6 pull-right">
 						<form class="form-horizontal">
 							<div class="col-md-4">
-								<select class="form-control month">
+								<select class="form-control invest-month">
 									<option>Jan</option>
 									<option>Feb</option>
 									<option>Mar</option>
@@ -201,7 +201,7 @@
 								</select>
 							</div>
 							<div class="col-md-4">
-								<input class="form-control year" type="text" placeholder="YEAR" />
+								<input class="form-control invest-year" type="text" placeholder="YEAR" />
 							</div>
 							<div class="col-md-4">
 								<button class="btn btn-info investment-filter" type="button">
@@ -212,7 +212,7 @@
 					</div>
 					<h3 class="box-title">List of Investments</h3>
 					<div class="table-responsive">
-						<table class="table">
+						<table class="investment-table table">
 							<thead>
 								<tr>
 									<th>CONTRIBUTOR</th>
@@ -236,7 +236,7 @@
 						</table>
 					</div>
 					<div class="row">
-						<div class="col-md-10 ">
+						<div class="col-md-10 invest-page-links">
 							{{$invests->links()}}
 						</div>
 					</div>
@@ -247,4 +247,60 @@
 </div>
 
 
+@endsection @section('scripts')
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".contribution-filter").click(function() {
+		var month = $('.contrib-month').val();
+		var year = $('.contrib-year').val();
+		$.get('/contribution-filter', {month: month,year: year}, function (data) {
+            console.log(data);
+			$('.contributions-table tbody').empty();
+			$('.contrib-page-links').hide();
+			$.each(data, function (i, value) {
+                var middleName = value.otherNames === null ? '' : value.otherNames;
+                
+				  $('.contributions-table').append('<tr>'+
+					'<td class="txt-oflo">'+value.firstName+' '+middleName+' '+value.lastName+'</td>'+
+					'<td class="txt-oflo"> GH₵'+ value.contributionAmount+'</td>'+
+					'<td class="txt-oflo">'+value.vendorName+'</td>'+
+					'<td class="txt-oflo">'+value.dateOfContribution+'</td>'+
+					'<td class="txt-oflo">'+
+						'<span class="text-success">Mode of Payment: '+value.modeOfPayment+' / Source of Payment: '+value.sourceOfPayment+' / Date of Approval: '+value.dateOfApproval+'</span>'+
+					'</td>'+
+				'</tr>'
+				);  
+			});
+		}).fail(function(data){
+console.log(data);
+		});
+	});
+
+	$(".investment-filter").click(function() {
+		var month = $('.invest-month').val();
+		var year = $('.invest-year').val();
+		$.get('/invest-filter', {month: month,year: year}, function (data) {
+            console.log(data);
+			$('.investment-table tbody').empty();
+			$('.invest-page-links').hide();
+			$.each(data, function (i, value) {
+                var middleName = value.otherNames === null ? '' : value.otherNames;
+                var cycleMonth = value.cycleMonth === null ? '' : value.cycleMonth;
+				var cycleYear = value.cycleYear === null ? '' : value.cycleYear;
+				  $('.investment-table').append('<tr>'+
+					'<td>'+value.firstName +' '+middleName+' '+value.lastName+'</td>'+
+					'<td class="txt-oflo">GH₵ '+value.quotaAmount+'</td>'+
+					'<td class="txt-oflo">GH₵ '+value.quotaWithInterest+'</td>'+
+					'<td class="txt-oflo">'+value.quotaMonth+' '+value.quotaYear+'</td>'+
+					'<td class="txt-oflo">'+cycleMonth+' '+cycleYear+'</td>'+
+				'</tr>'
+				);  
+			});
+		}).fail(function(data){
+console.log(data);
+		});
+	});
+});
+
+</script>
 @endsection

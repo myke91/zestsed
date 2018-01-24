@@ -25,18 +25,18 @@
 						<form class="form-horizontal">
 							<div class="col-md-4">
 								<select class="form-control month">
-									<option>Jan</option>
-									<option>Feb</option>
-									<option>Mar</option>
-									<option>Apr</option>
-									<option>May</option>
-									<option>Jun</option>
-									<option>Jul</option>
-									<option>Aug</option>
-									<option>Sep</option>
-									<option>Oct</option>
-									<option>Nov</option>
-									<option>Dec</option>
+									<option value="1">Jan</option>
+									<option value="2">Feb</option>
+									<option value="3">Mar</option>
+									<option value="4">Apr</option>
+									<option value="5">May</option>
+									<option value="6">Jun</option>
+									<option value="7">Jul</option>
+									<option value="8">Aug</option>
+									<option value="9">Sep</option>
+									<option value="10">Oct</option>
+									<option value="11">Nov</option>
+									<option value="12">Dec</option>
 								</select>
 							</div>
 							<div class="col-md-4">
@@ -104,24 +104,28 @@ $(document).ready(function(){
 		var month = $('.month').val();
 		var year = $('.year').val();
 		$.get('/registration-filter', {month: month,year: year}, function (data) {
+            console.log(data);
 			$('#registrationTable tbody').empty();
 			$('.page-links').hide();
-			$.each(data.data, function (i, value) {
-				var middleName = value.otherNames === null ? '' : value.otherNames;
-				var cycleMonth = value.cycleMonth === null ? '' : value.cycleMonth;
-				var cycleYear = value.cycleYear === null ? '' : value.cycleYear;
-				  $('#registrationTable').append('<tr><td><input class="select" name="investment[]" type="checkbox" value="'+value.investmentId+'" /></td>'+
-						'<td>'+value.firstName+' '+ +' '+value.lastName+'</td>'+
-						'<td class="txt-oflo"> GH₵ '+value.quotaAmount+'</td>'+
-						'<td class="txt-oflo"> GH₵ '+value.quotaRollover+'</td>'+
-						'<td class="txt-oflo"> GH₵ '+value.interestAmount+'</td>'+
-						'<td class="txt-oflo"> GH₵ '+value.cumulativeInterest+'</td>'+
-						'<td class="txt-oflo">'+cycleMonth+' '+cycleYear+'</td>'+
-						'<td class="txt-oflo">'+value.quotaMonth+' '+value.quotaYear+'</td></tr>'
+			$.each(data, function (i, value) {
+                var middleName = value.otherNames === null ? '' : value.otherNames;
+                if(value.isApproved == 1){
+                    var line = '<td><i class="fa fa-check" id="checked"></i></td>';
+                }else{
+                    var line = '<td><a href="/registration/approve/'+ value.registrationId +'" onclick="return confirm(\'Are you sure you want to approve this registration?\');"><i class="fa fa-times" id="notchecked"></i></a></td>';
+                }
+				  $('#registrationTable').append('<tr>'+
+						'<td>'+value.firstName+' '+ middleName +' '+value.lastName+'</td>'+
+						'<td class="txt-oflo"> '+value.email+'</td>'+
+						'<td class="txt-oflo"> '+value.phoneNumber+'</td>'+
+						'<td class="txt-oflo"> '+value.occupation+'</td>'+
+						'<td class="txt-oflo"> '+value.nextOfKin+'</td>'+
+                        line +
+						'<td><button value="'+value.registrationId+'" class="btn btn-success" id="show-reg">View Details</button></td></tr>'
 				);  
 			});
 		}).fail(function(data){
-
+console.log(data);
 		});
 	});
 });

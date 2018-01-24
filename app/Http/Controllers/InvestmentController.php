@@ -143,7 +143,7 @@ class InvestmentController extends Controller
         $year = $request->year;
 
         $invests = Investment::join('registration', 'registration.registrationId', '=', 'investment.memberId')
-            ->where(['quotaMonth' => $month, 'quotaYear' => $year])->paginate(0);
+            ->where(['quotaMonth' => $month, 'quotaYear' => $year])->get();
         return response()->json($invests);
     }
 

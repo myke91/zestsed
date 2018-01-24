@@ -158,4 +158,14 @@ class RegistrationController extends Controller
         }
     }
 
+    public function getRegistrationsForPeriod(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+
+        $regs = Registration::whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)->get();
+        return response()->json($regs);
+    }
+
 }

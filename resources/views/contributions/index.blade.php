@@ -109,8 +109,7 @@ $(document).ready(function(){
 		$.get('/contribution-filter', {month: month,year: year}, function (data) {
 			$('#contributionTable tbody').empty();
             $('.page-links').hide();
-            console.log(data.data);
-			$.each(data.data, function (i, value) {
+			$.each(data, function (i, value) {
                 var middleName = value.otherNames === null ? '' : value.otherNames;
                 if(value.isApproved == 1){
                     var line = '<td><i class="fa fa-check" id="checked"></i></td>';
@@ -124,7 +123,7 @@ $(document).ready(function(){
 						'<td class="txt-oflo">'+value.dateOfContribution+'</td>'+
 						'<td class="txt-oflo">'+value.modeOfPayment+'</td>'+
 						 line +
-                        '<td><button value="{{$cont->contributionId}}" class="btn btn-success" id="show-cont">View Details</button></td></tr>'
+                        '<td><button value="'+value.contributionId+'" class="btn btn-success" id="show-cont">View Details</button></td></tr>'
 				);  
 			});
 		}).fail(function(data){

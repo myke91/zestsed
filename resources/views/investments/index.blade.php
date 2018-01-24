@@ -147,7 +147,7 @@ $(document).ready(function(){
 		$.get('/invest-filter', {month: month,year: year}, function (data) {
 			$('#investTable tbody').empty();
 			$('.page-links').hide();
-			$.each(data.data, function (i, value) {
+			$.each(data, function (i, value) {
 				var middleName = value.otherNames === null ? '' : value.otherNames;
 				var cycleMonth = value.cycleMonth === null ? '' : value.cycleMonth;
 				var cycleYear = value.cycleYear === null ? '' : value.cycleYear;

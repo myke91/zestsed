@@ -180,10 +180,8 @@ class ContributionController extends Controller
         $year = $request->year;
 
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
-            ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName', 'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution', 'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
-            ->whereMonth('dateOfContribution',$month)
-            ->whereYear('dateOfContribution',$year)
-            ->paginate(0);
+            ->whereMonth('dateOfContribution', $month)
+            ->whereYear('dateOfContribution', $year)->get();
         return response()->json($conts);
     }
 
