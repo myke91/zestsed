@@ -23,6 +23,7 @@ class ContributionController extends Controller
     {
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
             ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName', 'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution', 'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
+            ->orderBy('contribution.dateOfContribution', 'DESC')
             ->paginate(10);
         return view('contributions.index', compact('conts'));
     }
@@ -45,7 +46,13 @@ class ContributionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::debug($request);
+        try {
+            Contribution::create($request->all());
+            return back()->with(['success' => 'Contribution saved successfully']);
+        } catch (\Exception $ex) {
+            return back()->with(['error' => 'Error while saving contribution']);
+        }
     }
 
     /**
@@ -67,7 +74,13 @@ class ContributionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $contrib = Contribution::join('registration', 'registration.registrationId', 'contribution.memberId')
+            ->select("contributionId", "modeOfPayment", "sourceOfPayment", "vendorName", "dateOfContribution", "contributionAmount", "contribution.isApproved",
+                "contribution.dateOfApproval", "isInvested", "memberId", "registrationId", "firstName", "lastName", "otherNames")
+            ->where('contributionId', $id)
+            ->first();
+        Log::debug($contrib);
+        return view('contributions.editContribution', compact('contrib'));
     }
 
     /**
@@ -79,12 +92,22 @@ class ContributionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (Contribution::find($id)->isApproved != 1) {
+            try {
+                Contribution::updateOrCreate(['contributionId' => $id], $request->all());
+                return back()->with(['success' => 'Contribution updated successfully']);
+            } catch (\Exception $ex) {
+                return back()->with(['error' => 'Error while updating contribution']);
+            }
+        }
+        return back()->with(['error' => 'Contribution already approved. Cannot be edited.']);
+
     }
 
     public function addContribution()
     {
-        return view('contributions.addContribution');
+        $regs = Registration::orderBy('firstName', 'ASC')->get();
+        return view('contributions.addContribution', compact('regs'));
     }
 
     /**
@@ -95,7 +118,20 @@ class ContributionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Log::debug($id);
+        Log::debug(Contribution::find($id));
+        Log::debug(Contribution::find($id)->isApproved);
+        if (Contribution::find($id)->isApproved != 1) {
+            try {
+                Log::debug('going to delete');
+                Contribution::destroy($id);
+                return response()->json(['message' => 'Success'], 200);
+            } catch (\Exception $ex) {
+                return response()->json($ex, 500);
+            }
+        }
+        Log::debug('not deleting');
+        return response()->json(['message' => "Contribution has already been approved."], 403);
     }
 
     public function saveContribution(Request $request)

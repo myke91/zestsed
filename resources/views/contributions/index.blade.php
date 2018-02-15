@@ -83,7 +83,11 @@
                                         <a href="{{route('approveContribution',$cont->contributionId)}}" onclick="return confirm('Are you sure you want to approve this contribution?');"><i class="fa fa-times" id="notchecked"></i></a>
                                         @endif
                                     </td>
-                                    <td><button value="{{$cont->contributionId}}" class="btn btn-success" id="show-cont">View Details</button></td>
+                                    <td>
+                                        <a href="contributions/{{$cont->contributionId}}/edit">
+                                            <button value="{{$cont->contributionId}}" class="btn btn-success">View Details</button>
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                             @endforeach
@@ -130,7 +134,33 @@ $(document).ready(function(){
 console.log(data);
 		});
 	});
-});
+}).on('click','.edit',function(e){
+e.preventDefault();
+var id = $("#contributionId").val();
+console.log(id);
+
+$.ajax({
+    url: "/contributions/"+id,
+    type: 'PUT',
+    data: $("#frm-contrib").serialize(),
+    success: function(data) {
+        swal('ZESTSED GH','Contribution updated successfully','success');
+    }
+  });
+}).on('click','.delete',function(e){
+    e.preventDefault();
+    var id = $("#contributionId").val();
+    console.log(id);
+    
+    $.ajax({
+        url: "/contributions/"+id,
+        type: 'DELETE',
+        data: $("#frm-contrib").serialize(),
+        success: function(data) {
+            swal('ZESTSED GH','Contribution updated successfully','success');
+        }
+      });
+    });
 
 </script>
 @endsection
