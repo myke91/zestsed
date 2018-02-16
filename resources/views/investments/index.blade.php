@@ -28,7 +28,7 @@
 			<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 				<ol class="breadcrumb">
 					<li>
-						<a href="/addInvestments">Add Investments</a>
+						Add Investments
 					</li>
 					<li>
 						<a href="/investments">Investments</a>
@@ -75,13 +75,21 @@
 						</form>
 					</div>
 					<h3 class="box-title">List of Investments for current month</h3>
+					@if(session('success'))
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{session('success')}}
+                    </div>
+                    @elseif(session('error'))
+                    <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{session('error')}}
+                        </div>
+                    @endif
 					<div class="table-responsive">
 						<table class="table" id="investTable">
 							<thead>
 								<tr>
-									<th>
-										<input class="select-all" type="checkbox" />
-									</th>
 									<th>CONTRIBUTOR</th>
 									<th>INITIAL QUOTA</th>
 									<th>ROLLOVER QUOTA</th>
@@ -94,9 +102,6 @@
 							@forelse($invests as $invest)
 							<tbody>
 								<tr>
-									<td>
-										<input class="select" name="investment[]" type="checkbox" value="{{$invest->investmentId}}" />
-									</td>
 									<td>{{$invest->firstName." ".$invest->otherNames." ".$invest->lastName}}</td>
 									<td class="txt-oflo"> GH₵ {{$invest->quotaAmount}}</td>
 									<td class="txt-oflo"> GH₵ {{$invest->quotaRollover}}</td>
@@ -113,9 +118,15 @@
 						<div class="col-md-10 page-links">
 							{{$invests->links()}}
 						</div>
-						<div class="row pull-right">
+						<div class="row pull-right"></div>
 							<div class="col-md-10 ">
-								<button class="btn btn-success" id="execute-eom">Execute EOM Operation</button>
+								<a href="/correctInvestment">
+									<button class="btn btn-info" ><i class="fa fa-check-square-o"></i>&nbsp;Correct First Cycle</button>
+								</a>
+								<a href="/process-eom">
+									<button class="btn btn-success" ><i class="fa fa-refresh"></i>&nbsp;Synchronized Investments</button>
+								</a>
+								
 							</div>
 						</div>
 					</div>

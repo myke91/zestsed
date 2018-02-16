@@ -27,6 +27,11 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         {{session('success')}}
                     </div>
+                    @elseif(session('error'))
+                    <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{session('error')}}
+                        </div>
                     @endif
                     <form class="form-horizontal" role="form" id="frm-create-contribution" action="{{route('contributions.store')}}" method="post">
                         {{csrf_field()}}

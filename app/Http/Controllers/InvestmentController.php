@@ -45,6 +45,7 @@ class InvestmentController extends Controller
             return back()->with(['success' => 'Investment saved successfully']);
         } catch (\Illuminate\Database\QueryException $ex) {
             Log::error($ex);
+            return back()->with(['error' => 'Saving Investment failed']);
         }
     }
 
@@ -147,39 +148,134 @@ class InvestmentController extends Controller
         return response()->json($invests);
     }
 
+    // public function processEndOfMonthOperation(Request $request)
+    // {
+    //     for ($i = 0; $i < count($request->batch); $i++) {
+    //         $id = $request->batch[$i];
+    //         try {
+    //             $investment = Investment::find($id);
+    //             if ($investment->quotaRollover == 0.00) {
+    //                 $interest = 0.04 * $investment->quotaAmount;
+    //                 $investment->interestAmount = $interest;
+    //                 $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
+    //                 $nextCycleDate = $date->addMonth();
+    //                 $nextCycleDate = $date->addMonth(); //investments start accruing interest in the next two months
+    //                 $investment->cycleMonth = $nextCycleDate->format('M');
+    //                 $investment->cycleYear = $nextCycleDate->year;
+    //                 $investment->quotaRollover = $investment->quotaAmount + $interest;
+    //                 $investment->quotaWithInterest = $investment->quotaAmount + $interest;
+    //                 $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+    //                 $investment->save();
+    //             } else {
+    //                 $interest = 0.04 * $investment->quotaRollover;
+    //                 $investment->interestAmount = $interest;
+    //                 $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');
+    //                 $nextCycleDate = $date->addMonth();
+    //                 $investment->cycleMonth = $nextCycleDate->format('M');
+    //                 $investment->cycleYear = $nextCycleDate->year;
+    //                 $investment->quotaRollover = $investment->quotaRollover + $interest;
+    //                 $investment->quotaWithInterest = $investment->quotaRollover + $interest;
+    //                 $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+    //                 $investment->save();
+    //             }
+    //         } catch (\Exception $ex) {
+    //             Log::debug($ex);
+    //             return response()->json($ex, 500);
+    //         }
+    //     }
+    // }
+
     public function processEndOfMonthOperation(Request $request)
     {
-        for ($i = 0; $i < count($request->batch); $i++) {
-            $id = $request->batch[$i];
+        $investments = Investment::all();
+        foreach ($investments as $key => $value) {
             try {
-                $investment = Investment::find($id);
+                $investment = $value;
                 if ($investment->quotaRollover == 0.00) {
-                    $interest = 0.04 * $investment->quotaAmount;
-                    $investment->interestAmount = $interest;
-                    $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
-                    $nextCycleDate = $date->addMonth();
-                    $investment->cycleMonth = $nextCycleDate->format('M');
-                    $investment->cycleYear = $nextCycleDate->year;
-                    $investment->quotaRollover = $investment->quotaAmount + $interest;
-                    $investment->quotaWithInterest = $investment->quotaAmount + $interest;
-                    $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
-                    $investment->save();
+                    $month = $investment->quotaMonth;
+                    $year = $investment->quotaYear;
+                    $current = Carbon::createFromFormat('Y-M', date('Y') . '-' . date('M'));
+                    $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
+                    while ($cycle < $current) {
+                        Log::debug("checked $cycle against $current");
+                        $investment = Investment::find($investment->investmentId);
+
+                        if ($investment->cycleYear != null && $investment->cycleMonth != null) {
+                            $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');
+                            $nextCycleDate = $date->addMonth();
+                            $interest = 0.04 * $investment->quotaRollover;
+                            $investment->quotaRollover = $investment->quotaRollover + $interest;
+                            $investment->quotaWithInterest = $investment->quotaRollover + $interest;
+                            $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+                        } else {
+                            $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
+                            $nextCycleDate = $date->addMonth();
+                            $nextCycleDate = $date->addMonth(); //investments start accruing interest in the next two months
+                            $interest = 0.04 * $investment->quotaAmount;
+                            $investment->quotaRollover = $investment->quotaAmount + $interest;
+                            $investment->quotaWithInterest = $investment->quotaAmount + $interest;
+                            $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+                        }
+
+                        $investment->interestAmount = $interest;
+                        $investment->cycleMonth = $nextCycleDate->format('M');
+                        $investment->cycleYear = $nextCycleDate->year;
+                        $month = $nextCycleDate->format('M');
+                        $year = $nextCycleDate->year;
+                        $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
+                        $investment->save();
+                    }
                 } else {
-                    $interest = 0.04 * $investment->quotaRollover;
-                    $investment->interestAmount = $interest;
-                    $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');
-                    $nextCycleDate = $date->addMonth();
-                    $investment->cycleMonth = $nextCycleDate->format('M');
-                    $investment->cycleYear = $nextCycleDate->year;
-                    $investment->quotaRollover = $investment->quotaRollover + $interest;
-                    $investment->quotaWithInterest = $investment->quotaRollover + $interest;
-                    $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
-                    $investment->save();
+                    $month = $investment->cycleMonth;
+                    $year = $investment->cycleYear;
+                    $current = Carbon::createFromFormat('Y-M', date('Y') . '-' . date('M'));
+                    $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
+
+                    while ($cycle < $current) {
+                        Log::debug("checked $cycle against $current");
+                        $investment = Investment::find($investment->investmentId);
+                        Log::debug($investment);
+                        $interest = 0.04 * $investment->quotaRollover;
+                        $investment->interestAmount = $interest;
+                        $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');
+                        $nextCycleDate = $date->addMonth();
+                        $investment->cycleMonth = $nextCycleDate->format('M');
+                        $investment->cycleYear = $nextCycleDate->year;
+                        $investment->quotaRollover = $investment->quotaRollover + $interest;
+                        $investment->quotaWithInterest = $investment->quotaRollover + $interest;
+                        $investment->cumulativeInterest = $investment->cumulativeInterest + $interest;
+
+                        $month = $nextCycleDate->format('M');
+                        $year = $nextCycleDate->year;
+                        $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
+                        $investment->save();
+                    }
                 }
             } catch (\Exception $ex) {
                 Log::debug($ex);
-                return response()->json($ex, 500);
+                return back()->with(['error' => 'An error occurred']);
             }
         }
+        return back()->with(['success' => 'Investment cycles process successfully']);
+    }
+
+    public function correctInvestmentCycle(Request $request)
+    {
+        $investments = Investment::all();
+        foreach ($investments as $key => $value) {
+            $investment = $value;
+            $interest = 0.04 * $investment->quotaAmount;
+            $investment->interestAmount = $interest;
+            $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
+            $nextCycleDate = $date->addMonth();
+            $nextCycleDate = $date->addMonth(); //investments start accruing interest in the next two months
+            $investment->cycleMonth = $nextCycleDate->format('M');
+            $investment->cycleYear = $nextCycleDate->year;
+            $investment->quotaRollover = $investment->quotaAmount + $interest;
+            $investment->quotaWithInterest = $investment->quotaAmount + $interest;
+            $investment->cumulativeInterest = 0.00 + $interest;
+            $investment->save();
+        }
+        return back()->with(['success' => 'Investment cycles corrected']);
     }
 }

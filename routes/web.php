@@ -51,7 +51,9 @@ Route::group(['middleware' => 'authen'], function () {
     Route::get('/edit-user', ['as' => 'editUser', 'uses' => 'UserController@editUser']);
     Route::post('/update-user', ['as' => 'updateUser', 'uses' => 'UserController@updateUser']);
     Route::get('/invest-filter', ['as' => 'getInvestmentsForPeriod', 'uses' => 'InvestmentController@getInvestmentsForPeriod']);
-    Route::post('/process-eom',['as'=>'processEndOfMonthOperation','uses'=>'InvestmentController@processEndOfMonthOperation']);
+    Route::get('/process-eom',['as'=>'processEndOfMonthOperation','uses'=>'InvestmentController@processEndOfMonthOperation']);
     Route::get('/contribution-filter', ['as' => 'getContributionsForPeriod', 'uses' => 'ContributionController@getContributionsForPeriod']);
     Route::get('/registration-filter', ['as' => 'getRegistrationsForPeriod', 'uses' => 'RegistrationController@getRegistrationsForPeriod']);
+
+    Route::get("/correctInvestment", ['as' => 'correctInvestmentCycle', 'uses' => 'InvestmentController@correctInvestmentCycle']);
 });
