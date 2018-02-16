@@ -197,7 +197,6 @@ class InvestmentController extends Controller
                     $current = Carbon::createFromFormat('Y-M', date('Y') . '-' . date('M'));
                     $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
                     while ($cycle < $current) {
-                        Log::debug("checked $cycle against $current");
                         $investment = Investment::find($investment->investmentId);
 
                         if ($investment->cycleYear != null && $investment->cycleMonth != null) {
@@ -232,9 +231,7 @@ class InvestmentController extends Controller
                     $cycle = Carbon::createFromFormat('Y-M', $year . '-' . $month);
 
                     while ($cycle < $current) {
-                        Log::debug("checked $cycle against $current");
                         $investment = Investment::find($investment->investmentId);
-                        Log::debug($investment);
                         $interest = 0.04 * $investment->quotaRollover;
                         $investment->interestAmount = $interest;
                         $date = Carbon::createFromFormat('Y-M-d', $investment->cycleYear . '-' . $investment->cycleMonth . '-10');

@@ -119,7 +119,7 @@
 							{{$invests->links()}}
 						</div>
 						<div class="row pull-right"></div>
-							<div class="col-md-10 ">
+							<div class="col-md-4">
 								<a href="/correctInvestment">
 									<button class="btn btn-info" ><i class="fa fa-check-square-o"></i>&nbsp;Correct First Cycle</button>
 								</a>
