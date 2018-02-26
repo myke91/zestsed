@@ -121,7 +121,7 @@
 						<div class="row pull-right"></div>
 							<div class="col-md-4">
 								<a href="/correctInvestment">
-									<button class="btn btn-info" ><i class="fa fa-check-square-o"></i>&nbsp;Correct First Cycle</button>
+									<button class="btn btn-info" ><i class="fa fa-check-square-o"></i>&nbsp;Reset ALL investment cycles</button>
 								</a>
 								<a href="/process-eom">
 									<button class="btn btn-success" ><i class="fa fa-refresh"></i>&nbsp;Synchronized Investments</button>
@@ -162,7 +162,7 @@ $(document).ready(function(){
 				var middleName = value.otherNames === null ? '' : value.otherNames;
 				var cycleMonth = value.cycleMonth === null ? '' : value.cycleMonth;
 				var cycleYear = value.cycleYear === null ? '' : value.cycleYear;
-				  $('#investTable').append('<tr><td><input class="select" name="investment[]" type="checkbox" value="'+value.investmentId+'" /></td>'+
+				  $('#investTable').append('<tr>'+
 						'<td>'+value.firstName+' '+ middleName +' '+value.lastName+'</td>'+
 						'<td class="txt-oflo"> GH₵ '+value.quotaAmount+'</td>'+
 						'<td class="txt-oflo"> GH₵ '+value.quotaRollover+'</td>'+

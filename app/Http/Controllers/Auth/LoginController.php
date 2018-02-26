@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Registration;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\DB;
@@ -56,9 +57,12 @@ class LoginController extends Controller
                 return Response::json(["error" => "INVALID PASSWORD"], 401);
             }
             return response()->json(['success' => 'FIRST TIME LOGIN'], 200);
+        }else if(!is_null(Registration::where('email', trim($email))->first())){
+        Log::error('USER REGISTRATION NOT APPROVED');
+        return Response::json("Your registration may not have been approved yet, if you entered the right email.\n Kindly contact ZestSed office.", 401);
         }
         Log::error('USER NOT FOUND');
-        return Response::json("Your registration may not have been approved yet, if you entered the right email.\n Kindly contact ZestSed office.", 401);
+        return Response::json("ACCOUNT DOES NOT EXIST.", 401);
     }
 
     public function setPassword(Request $request)

@@ -209,7 +209,8 @@ class InvestmentController extends Controller
                         } else {
                             $date = Carbon::createFromFormat('Y-M-d', $investment->quotaYear . '-' . $investment->quotaMonth . '-10');
                             $nextCycleDate = $date->addMonth();
-                            $nextCycleDate = $date->addMonth(); //investments start accruing interest in the next two months
+                            $nextCycleDate = $date->addMonth(); 
+                            $nextCycleDate = $date->addMonth();//investments start accruing interest in the next three months
                             $interest = 0.04 * $investment->quotaAmount;
                             $investment->quotaRollover = $investment->quotaAmount + $interest;
                             $investment->quotaWithInterest = $investment->quotaAmount + $interest;
