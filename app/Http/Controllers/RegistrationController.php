@@ -147,6 +147,8 @@ class RegistrationController extends Controller
                     return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
                 }
             }
+        } else {
+            return response()->json(['message' => 'Device already registered'], 200);
         }
     }
 
