@@ -96,7 +96,7 @@ class RegistrationController extends Controller
 
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
         } catch (\Illuminate\Database\QueryException $ex) {
-            Log::info('save error');
+            Log::info('save error'. $ex->getMessage());
             return response()->json(['error' => 'An error occured while saving your registration \n' . $ex->getMessage()], 500);
         }
     }
@@ -143,7 +143,7 @@ class RegistrationController extends Controller
                     Log::info('device registration successful');
                     return response()->json(['success' => 'DEVICE REGISTRATION SUCCESSFUL'], 200);
                 } catch (\Illuminate\Database\QueryException $ex) {
-                    Log::info('save error');
+                    Log::info('save error'. $ex->getMessage());
                     return response()->json(['error' => 'An error occured while registering your device \n' . $ex->getMessage()], 500);
                 }
             }

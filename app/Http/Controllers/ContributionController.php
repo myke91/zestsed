@@ -150,7 +150,7 @@ class ContributionController extends Controller
 
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
         } catch (Exception $ex) {
-            Log::info('save error');
+            Log::info('save error'. $ex->getMessage());
             return response()->json(['error' => 'An error occured while saving your registration \n' . $ex->getMessage()], 500);
         }
     }
