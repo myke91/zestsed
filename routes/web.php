@@ -18,6 +18,8 @@ Route::get('/overview', ['as' => 'overviewGraphData', 'uses' => 'MainController@
 Route::get('/registration/approve/{id}', ['as' => 'approveRegistration', 'uses' => 'RegistrationController@approveRegistration']);
 Route::get('/contribution/approve/{id}', ['as' => 'approveContribution', 'uses' => 'ContributionController@approveContribution']);
 
+Route::get('/reset-password/{id}', ['as' => 'resetPassword', 'uses' => 'UserController@resetPassword']);
+
 //Mobile API
 Route::post('/mobile/register', ['as' => 'saveRegistration', 'uses' => 'RegistrationController@saveRegistration']);
 Route::post('/mobile/login', ['as' => 'mobileLogin', 'uses' => 'Auth\LoginController@mobileLogin']);

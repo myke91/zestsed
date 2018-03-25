@@ -51,6 +51,17 @@
 					</div>
                     <h3 class="box-title">List of Registrations</h3>
                     <div class="table-responsive">
+                            @if(session('success'))
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{session('success')}}
+                            </div>
+                            @elseif(session('error'))
+                            <div class="alert alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{session('error')}}
+                                </div>
+                            @endif
                         <table class="table" id="registrationTable">
                             <thead>
                                 <tr>
@@ -60,7 +71,7 @@
                                     <th>OCCUPATION</th>
                                     <th>NEXT OF KIN</th>
                                     <th>OCCUPATION</th>
-                                    <th colspan="2">APPROVE</th>
+                                    <th colspan="3" style="text-align:center">ACTIONS</th>
                                 </tr>
                             </thead>
                             @foreach($regs as $reg)
@@ -80,7 +91,12 @@
                                     <a href="{{route('approveRegistration',$reg->registrationId)}}" onclick="return confirm('Are you sure you want to approve this registration?');"><i class="fa fa-times" id="notchecked"></i></a>
                                     @endif
                                 </td>
+                                <td><a href="{{route('resetPassword',$reg->registrationId)}}" onclick="return confirm('Are you sure you want to reset this user\'s password?');">
+                                        <Button class="btn btn-danger">Reset Password</Button>
+                                    </a>
+                                </td>
                                 <td><Button value="{{$reg->registrationId}}" class="btn btn-success" id="show-reg">View Details</Button></td>
+
                             </tr>
                             </tbody>
                             @endforeach

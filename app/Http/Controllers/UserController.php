@@ -76,4 +76,15 @@ class UserController extends Controller
             return response()->json(['error' => 'An error occured ' . $ex], 500);
         }
     }
+
+    public function resetPassword($id){
+        try {
+            $customer = Registration::find($id);
+            $user = User::where('email', $customer->email)->update(['password' => null]);
+            return back()->with(['success' => $customer->firstName.' '.$customer->lastName.' password reset successfully']);
+        } catch (\Exception $ex) {
+            Log::debug($ex);
+            return back()->with(['error'=>'Error reseting user password']);
+        }
+    }
 }
