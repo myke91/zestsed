@@ -88,7 +88,7 @@
                                     <td class="txt-oflo">{{$cont->dateOfContribution}}</td>
                                     <td class="txt-oflo">{{$cont->modeOfPayment}}</td>
                                     <td>
-                                        @if($cont->isApproved == 1)
+                                        @if($cont->isApproved === 1)
                                         <i class="fa fa-check" id="checked"></i>
                                         @else
                                         <a href="{{route('approveContribution',$cont->contributionId)}}" onclick="return confirm('Are you sure you want to approve this contribution?');"><i class="fa fa-times" id="notchecked"></i></a>

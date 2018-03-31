@@ -22,8 +22,10 @@ class ContributionController extends Controller
     public function index()
     {
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
-            ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName', 'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution', 'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
-            ->orderBy('contribution.dateOfContribution', 'DESC')
+            ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName',
+                'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution',
+                'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
+            ->orderBy('contribution.dateOfContribution', 'ASC')
             ->paginate(10);
         return view('contributions.index', compact('conts'));
     }
@@ -150,7 +152,7 @@ class ContributionController extends Controller
 
             return response()->json(['success' => 'SAVE SUCCESSFUL'], 200);
         } catch (Exception $ex) {
-            Log::info('save error'. $ex->getMessage());
+            Log::info('save error' . $ex->getMessage());
             return response()->json(['error' => 'An error occured while saving your registration \n' . $ex->getMessage()], 500);
         }
     }
@@ -197,7 +199,7 @@ class ContributionController extends Controller
     public function getUserContributions(Request $request)
     {
         $data = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
-            ->where(['registration.registrationId' => $request->id, 'contribution.isApproved' => 1, 'contribution.isInvested' => 0])->get();
+            ->where(['registration.registrationId' => $request->id, 'contribution.isApproved' => 1])->get();
 
         return response()->json($data);
     }
@@ -216,8 +218,13 @@ class ContributionController extends Controller
         $year = $request->year;
 
         $conts = Contribution::join('registration', 'registration.registrationId', '=', 'contribution.memberId')
+            ->select("contributionId", "modeOfPayment", "sourceOfPayment", "vendorName", "dateOfContribution", "contributionAmount", "contribution.isApproved",
+                "contribution.dateOfApproval", "isInvested", "memberId", "registrationId", "firstName", "lastName", "otherNames")
             ->whereMonth('dateOfContribution', $month)
-            ->whereYear('dateOfContribution', $year)->get();
+            ->whereYear('dateOfContribution', $year)
+            ->orderBy('dateOfContribution','ASC')
+            ->get();
+            Log::debug($conts);
         return response()->json($conts);
     }
 
