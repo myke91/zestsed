@@ -25,7 +25,8 @@ class ContributionController extends Controller
             ->select('contribution.contributionId', 'registration.firstName as firstName', 'registration.otherNames', 'registration.lastName as lastName',
                 'contribution.contributionAmount as contributionAmount', 'contribution.vendorName as vendorName', 'contribution.dateOfContribution as dateOfContribution',
                 'contribution.modeOfPayment as modeOfPayment', 'contribution.isApproved as isApproved')
-            ->orderBy('contribution.dateOfContribution', 'ASC')
+            ->orderBy('contribution.created_at','DESC')
+            ->orderBy('isApproved','DESC')
             ->paginate(10);
         return view('contributions.index', compact('conts'));
     }

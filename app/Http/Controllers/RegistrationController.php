@@ -20,7 +20,10 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        $regs = Registration::paginate(10);
+        $regs = Registration
+        ::orderBy('created_at','DESC')
+        ->orderBy('isApproved','DESC')
+        ->paginate(10);
         return view('registrations.index', compact('regs'));
     }
 

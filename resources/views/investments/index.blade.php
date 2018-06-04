@@ -124,7 +124,7 @@
 									<button class="btn btn-info" ><i class="fa fa-check-square-o"></i>&nbsp;Reset ALL investment cycles</button>
 								</a>
 								<a href="/process-eom">
-									<button class="btn btn-success" ><i class="fa fa-refresh"></i>&nbsp;Synchronized Investments</button>
+									<button class="btn btn-success" ><i class="fa fa-refresh"></i>&nbsp;Synchronize Investments</button>
 								</a>
 								
 							</div>
